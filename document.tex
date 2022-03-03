@@ -15,8 +15,8 @@
 \newcommand{\cN}{\mathbb{N}}
 \newcommand{\cR}{\mathbb{R}}
 \newcommand{\vset}{\mathcal{V}}
-\newcommand{\wmap}{\omega}
-\newcommand{\wmin}{\omega_m}
+\newcommand{\wmap}{w}
+\newcommand{\wmin}{w_m}
 \newcommand{\size}[1]{|#1|}
 
 % Trees in general
@@ -52,6 +52,8 @@
 \newcommand{\oldpar}[1]{{\begin{nolinenumbers}\color{dimmed}#1 \end{nolinenumbers}}}
 
 \newcommand{\ldcomment}[1]{\textcolor{purple}{{\footnotesize Loïc:} #1}}
+\newcommand{\bldcomment}[1]{\textcolor{purple}{{\footnotesize Bruno:} #1}}
+
 \newcommand{\ldtodo}[1]{\textcolor{blue}{{\footnotesize [TODO Loïc]} #1}}
 \newcommand{\ldmargin}[1]{\textcolor{blue}{*}\marginpar{\textcolor{blue}{\scriptsize Loïc: #1}}}
 
@@ -73,20 +75,24 @@ In this whole document the following holds. We denote by $\cN$ the set of non-ne
 
 \subsection{Forests and trees, rooting and ordering}
 
-We call forest any finite (possibly empty) simple (no loops nor multiple edges) undirected graph whose vertices belong to $\vset$ and that does not admit a cycle. We call tree any non-empty connected forest. We insist here on the fact that with our definition the empty forest is not a tree. The set of the vertices of a tree $T$ is denoted by $\vsetof{T}$. Given a pair of (possibly equal) vertices $u$ and $v$ of $T$ we denote by $\distance{u}{v}{T}$ the distance between $u$ and $v$ in $T$: the number of edges of the path between $u$ and $v$ in $T$.
+We call forest any finite (possibly empty) simple (no loops nor multiple edges) undirected graph whose vertices belong to $\vset$ and that does not admit a cycle. We call tree any non-empty connected forest. We insist here on the fact that with our definition the empty forest is not a tree. The set of the vertices of a tree $T$ is denoted by $\vsetof{T}$. Given a pair of (possibly equal) vertices $u$ and $v$ of $T$ we denote by $\distance{u}{v}{T}$ the distance between $u$ and $v$ in $T$: the number of edges of the unique path between $u$ and $v$ in $T$.
 
-A pair $(F,R)$ where $F$ is a forest and $R$ is a set containing exactly one vertex from each connected component of $F$  is called a rooted forest and denoted by $\rtree{F}{R}$ (the empty forest is rooted by $\emptyset$). A rooted tree $\rtree{T}{\{r\}}$ is denoted by $\rtree{T}{r}$ in order to ease the reading. Given two (possibly equal) vertices $u$ and $v$ of $T$ we say that $u$ is an ancestor of $v$ in $\rtree{T}{r}$ if $u$ lies on the path between $v$ and $r$ in $T$: then we say that $v$ is an offspring of $u$ in $\rtree{T}{r}$. We call ordering of $\rtree{T}{r}$ any map $\sigma$ sending each vertex $u$ of $T$ to a total order $\sigma(u)$ on the sons of $u$ in $\rtree{T}{r}$. We say that $\ortree{T}{r}{\sigma}$ is an ordered rooted tree.
+A pair $(F,R)$ where $F$ is a forest and $R$ is a set containing exactly one vertex from each connected component of $F$  is called a rooted forest and denoted by $\rtree{F}{R}$ (the empty forest is rooted by $\emptyset$). A rooted tree $\rtree{T}{\{r\}}$ is denoted by $\rtree{T}{r}$ in order to ease the reading. Given two (possibly equal) vertices $u$ and $v$ of $T$ we say that $u$ is an ancestor of $v$ and $v$ an offspring of $u$ in $\rtree{T}{r}$ if $u$ lies on the path between $v$ and $r$ in $T$. We call ordering of $\rtree{T}{r}$ any map $\sigma$ sending each vertex $u$ of $T$ to a total order $\sigma(u)$ on the children of $u$ in $\rtree{T}{r}$. We say that $\ortree{T}{r}{\sigma}$ is an ordered rooted tree.
+
+\bldcomment{`Children' yet undefined.}
 
 From $\ortree{T}{r}{\sigma}$ one constructs a total order on the vertices of $T$ as follows. For any two distinct vertices $u$ and $v$ of $T$ we say that $u$ is before $v$ in the \textit{BFS order} of $\ortree{T}{r}{\sigma}$ if $\distance{u}{r}{T} < \distance{v}{r}{T}$ or if $\distance{u}{r}{T} = \distance{v}{r}{T}$ and $u$ and $v$ have respective ancestors $x$ and $y$ with a common father $z$ in $\rtree{T}{r}$ such that $x$ is before $y$ in $\sigma(z)$. Observe that it would imply that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$.
 
 
 \subsection{Isomorphism}
 
-An isomorphism from a tree $T$ to another tree $T'$ is a bijection $f$ from the vertices of $T$ to the vertices of $T'$ such that for every two vertices $u$ and $v$ of $T$ the edge $uv$ belongs to $T$ if and only if the edge $f(u)f(v)$ belongs to $T'$. A labeled isomorphism from a tree $T$ to another tree $T'$ is an isomorphism $f$ from $T$ to $T'$ such that $\wmap(f(v)) = \wmap(v)$ for every vertex $v$ of $T$. A rooted isomorphism from a rooted tree $\rtree{T}{r}$ to another rooted tree $\rtree{T'}{r'}$ is an isomorphism $f$ from $T$ to $T'$ such that $f(r) = r'$. A labeled rooted isomorphism is a rooted isomorphism that is also a labeled isomorphism. An ordered rooted isomorphism from an ordered rooted tree $\ortree{T}{r}{\sigma}$ to another ordered rooted tree $\ortree{T'}{r'}{\sigma'}$ is a rooted isomorphism $f$ from $\rtree{T}{r}$ to $\rtree{T'}{r'}$ such that for every two distinct sons $u$ and $v$ of a vertex $w$ in $\rtree{T}{r}$ one has that $u$ is before $v$ in $\sigma(w)$ if and only if $f(u)$ is before $f(v)$ in $\sigma(f(w))$. A labeled ordered rooted isomorphism is an ordered rooted isomorphism that is also a labeled isomorphism.
+An isomorphism from a tree $T$ to another tree $T'$ is a bijection $f\colon \vset (T) \to \vset (T')$ such that for every two vertices $u$ and $v$ of $T$ the edge $uv$ belongs to $T$ if and only if the edge $f(u)f(v)$ belongs to $T'$. A labeled isomorphism from a tree $T$ to another tree $T'$ is an isomorphism $f$ from $T$ to $T'$ such that $\wmap(f(v)) = \wmap(v)$ for every vertex $v$ of $T$. A rooted isomorphism from a rooted tree $\rtree{T}{r}$ to another rooted tree $\rtree{T'}{r'}$ is an isomorphism $f$ from $T$ to $T'$ such that $f(r) = r'$. A labeled rooted isomorphism is a rooted isomorphism that is also a labeled isomorphism. An ordered rooted isomorphism from an ordered rooted tree $\ortree{T}{r}{\sigma}$ to another ordered rooted tree $\ortree{T'}{r'}{\sigma'}$ is a rooted isomorphism $f$ from $\rtree{T}{r}$ to $\rtree{T'}{r'}$ such that for every two distinct children $u$ and $v$ of a vertex $w$ in $\rtree{T}{r}$ one has that $u$ is before $v$ in $\sigma(w)$ if and only if $f(u)$ is before $f(v)$ in $\sigma(f(w))$. A labeled ordered rooted isomorphism is an ordered rooted isomorphism that is also a labeled isomorphism.
 
 \subsection{Degree sequences}
 
-The degree sequence of a tree $T$ with $n$ vertices is the sequence $(d_1, \dots, d_n)$ of the degrees of the vertices of $T$ given in non-increasing order. The rooted degree sequence of a rooted tree $\rtree{T}{r}$ with $n$ vertices is the sequence $(d, d_1, \dots, d_{n-1})$ where $d$ is the degree of $r$ in $T$ and $d_1, \dots, d_{n-1}$ are the degrees of the other vertices of $T$ in non-increasing order.
+The degree sequence of a tree %$T$ with $n$ vertices 
+is the sequence %$(d_1, \dots, d_n)$ 
+of the degrees of its vertices of given in non-increasing order. The rooted degree sequence of a rooted tree $\rtree{T}{r}$ with $n$ vertices is the sequence $(d, d_1, \dots, d_{n-1})$ where $d$ is the degree of $r$ in $T$ and $d_1, \dots, d_{n-1}$ are the degrees of the other vertices of $T$ in non-increasing order.
 
 Consider an ordered rooted tree $\ortree{T}{r}{\sigma}$ and let $n$ denote the number of vertices of $T$. One can consider the integer sequence $D = (d_1, \dots, d_n)$ where for each $k \in [n]$ the integer $d_k$ is the degree in $T$ of the $k^{th}$ vertex of $T$ in the BFS order of $\ortree{T}{r}{\sigma}$. We say that $D$ is the \textit{BFS degree sequence} of $\ortree{T}{r}{\sigma}$. It is easily seen that this sequence is preserved under ordered rooted isomorphism and is unique to each equivalence class for the ordered rooted isomorphism equivalence. It can also be shown that a sequence $(d_1, \dots, d_n) \in (\cN \setminus \{0\})^n$ for some $n \geq 1$ is the BFS degree sequence of an ordered rooted tree if and only if
 \begin{equation}
@@ -106,9 +112,11 @@ We say that a class $\tclass$ is proper if for every two trees $T$ and $T'$ such
 
 Consider some finite non-empty $V \subset \vset$ and some non-empty set $S$ of degree sequences of length $\size{V}$. We denote by $\pclass{V}{S}$ the set containing exactly the trees whose vertex set is $V$ and whose degree sequence belongs to $S$. The set $\pclass{V}{S}$ is a proper class and every proper class is such a set. Now consider also some non-empty set $S'$ of rooted degree sequences of length $\size{V}$. We denote by $\rpclass{V}{S'}$ the set containing exactly the rooted trees whose vertex set is $V$ and whose rooted degree sequence belongs to $S'$. The set $\rpclass{V}{S'}$ is a proper rooted class and every proper rooted class is such a set.
 
+\bldcomment{`Every proper class is such a set' seems false.}
 
 \subsection{Vertex-switch and edge-switch}
 
+\bldcomment{External neighborhood is a nonstandard term for `set of children'}
 \begin{defi}
 Assume that a tree $T$ has two distinct vertices $u$ and $v$ whose external neighborhoods in $T$ are respectively $N_u$ and $N_v$. Removing the edges between $u$ and $N_u$ and between $v$ and $N_v$ and then adding the edges between $u$ and $N_v$ and between $v$ and $N_u$ gives a tree $T'$. We say that $T'$ is obtained from $T$ by the vertex-switch of the vertices $u$ and $v$. Given a vertex $r$ of $T$ we set $r' = r$ if $r \notin \{u,v\}$, $r' = v$ if $r = u$ and $r' = u$ if $r = v$ and we say that the rooted tree $\rtree{T'}{r'}$ is obtained from the rooted tree $\rtree{T}{r}$ by the rooted vertex-switch of $u$ and $v$.
 \end{defi}
@@ -117,10 +125,11 @@ Assume that a tree $T$ has two distinct vertices $u$ and $v$ whose external neig
 Assume that a tree $T$ has four pairwise-distinct vertices $x,u,v,y$ such that $xu$ and $vy$ are edges of $T$ and $u$ and $v$ both belong to the path between $x$ and $y$ in $T$. Removing the edges $xu$ and $vy$ and adding the edges $xv$ and $uy$ gives a tree $T'$. We say that $T'$ is obtained from $T$ by the edge-switch of the edges $xu$ and $yv$. Given a vertex $r$ of $T$ we say that the rooted tree $\rtree{T'}{r}$ is obtained from the rooted tree $\rtree{T}{r}$ by the rooted edge-switch of the edges $xu$ and $vy$.
 \end{defi}
 
-Vertex-switch and edge-switch preserve the vertex set and the degree sequence of a tree. Rooted vertex-switch and rooted edge-switch preserve the vertex set and the rooted degree sequence of a rooted tree. It is easily seen that if two trees $T$ and $T'$ have the same vertex set $V$ and the same degree sequence then there is a sequence of vertex-switch transforming $T$ into some tree $T''$ whose vertex set is also $V$ and such that every vertex in $V$ has the same degree in $T'$ than in $T''$. It is then known from the literature (\cite[Theorem~4.3]{switch}) that there is a sequence of edge-switch between $T'$ and $T''$. Similarly if two rooted trees have the same vertex set and the same rooted degree sequence then there is a sequence of rooted vertex-switch and rooted edge-switch transforming one into the other. Hence Observation~\ref{rem:proper}.
+Vertex-switch and edge-switch preserve the vertex set and the degree sequence of a tree. Rooted vertex-switch and rooted edge-switch preserve the vertex set and the rooted degree sequence of a rooted tree. It is easily seen that if two trees $T$ and $T'$ have the same vertex set $V$ and the same degree sequence then there is a vertex-switch sequence transforming $T$ into some tree $T''$ whose vertex set is also $V$ and such that every vertex in $V$ has the same degree in $T'$ than in $T''$. It is known that there is an edge-switch sequence between $T'$ and $T''$ \cite[Theorem~4.3]{switch}. Similarly if two rooted trees have the same vertex set and the same rooted degree sequence then there is a sequence of rooted vertex-switch and rooted edge-switch transforming one into the other. Hence Observation~\ref{rem:proper}.
 
 \begin{rem}\label{rem:proper}
-A class $\tclass$ is proper if and only if every tree obtained from some element of $\tclass$ by a vertex-switch or by an edge-switch also belongs to $\tclass$. A rooted class $\rtclass$ is proper if and only if every rooted tree obtained from some element of $\rtclass$ by a rooted vertex-switch or by a rooted edge-switch also belongs to $\rtclass$.
+%A class $\tclass$ is proper if and only if every tree obtained from some element of $\tclass$ by a vertex-switch or by an edge-switch also belongs to $\tclass$. A rooted class $\rtclass$ is proper if and only if every rooted tree obtained from some element of $\rtclass$ by a rooted vertex-switch or by a rooted edge-switch also belongs to $\rtclass$.
+A class is proper if and only if it is closed under vertex-switch and edge-switch. A rooted class is proper if and only if it is closed under rooted vertex-switch and rooted edge-switch.
 \end{rem}
 
 \subsection{Arity}
@@ -133,7 +142,7 @@ Consider some $k \geq 1$. We say that a tree $T$ is $k$-ary if every vertex of $
 \subsection{Greedy ordered rooted trees}
 
 \begin{defi}
-Assume that an ordered rooted tree $\ortree{T}{r}{\sigma}$ admits some vertex $v$, some non-empty subset $S$ of the sons of $v$, and some other vertex $u \neq v$ that is before $v$ in the BFS order of $\ortree{T}{r}{\sigma}$. Removing the edges between $v$ and $S$ and adding the edges between $u$ and $S$ gives a tree $T'$. We say that the tree $T'$ and the rooted tree $\rtree{T'}{r}$ are obtained from $\ortree{T}{r}{\sigma}$ by a packing.
+Assume that an ordered rooted tree $\ortree{T}{r}{\sigma}$ admits some vertex $v$, some non-empty subset $S$ of the children of $v$, and some other vertex $u \neq v$ that is before $v$ in the BFS order of $\ortree{T}{r}{\sigma}$. Removing the edges between $v$ and $S$ and adding the edges between $u$ and $S$ gives a tree $T'$. We say that the tree $T'$ and the rooted tree $\rtree{T'}{r}$ are obtained from $\ortree{T}{r}{\sigma}$ by a packing.
 \end{defi}
 
 \begin{defi}
@@ -190,7 +199,7 @@ Given a proper class $\pclass{V}{S}$ and some $D \in S$ we say that $\greedy{V}{
 \end{defi}
 
 \begin{rem}\label{rem:majorization}
-Consider some finite non-empty $V \subset \vset$, some degree sequence $D$ of length $\size{V}$ and some rooted degree sequence $E$ of length $\size{V}$. The degree sequence of any tree obtained from $\greedy{V}{D}$ by a packing is distinct from and majorizes the degree sequence of $\greedy{V}{D}$. The rooted degree sequence of any rooted tree obtained from $\greedy{V}{E}$ by a packing is distinct from and majorizes the rooted degree sequence of $\greedy{V}{E}$. 
+Consider some finite non-empty $V \subset \vset$, some degree sequence $D$ of length $\size{V}$ and some rooted degree sequence $E$ of length $\size{V}$. The degree sequence of any tree obtained from $\greedy{V}{D}$ by a packing is distinct from and majorizes $D$. The rooted degree sequence of any rooted tree obtained from $\greedy{V}{E}$ by a packing is distinct from and majorizes $E$. 
 \end{rem}
 
 \begin{cor}\label{cor:majorization}
@@ -208,12 +217,12 @@ We recall that the BFS degree sequence of $\greedy{V}{D'}$ is $D'$. Let us write
 
 Let us assume our first claim is false and obtain a contradiction. There is $i \in \{k+1, \dots, l-1\}$ such that $d^{\Sigma}_i < d''^{\Sigma}_i$. So $d^{\Sigma}_i \leq d'^{\Sigma}_i$ and we have equality since $D$ majorizes $D'$. But since $d^{\Sigma}_k > d'^{\Sigma}_k$ and since $D$ and $D'$ are non-increasing then $d_i < d'{k+1}$.  From that we conclude $d^{\Sigma}_l < (l-i) d'_{k+1} + d^{\Sigma}_i \leq (l-i) d'_{k+1} + d'^{\Sigma}_i = d'^{\Sigma}_l$ hence contradicting the assumption that $D$ majorizes $D'$. 
 
-To prove our second claim let $u$ and $v$ denote respectively the $k^{th}$ and the $l^{th}$ vertex of $\greedy{V}{D'}$ with respect to the BFS order of $\greedy{V}{D'}$. Attaching one of the sons of $v$ to $u$ instead of $v$ (we recall here that $d'_l > 1$ so there is such a son) gives a tree whose degree sequence is $D''$.
+To prove our second claim let $u$ and $v$ denote respectively the $k^{th}$ and the $l^{th}$ vertex of $\greedy{V}{D'}$ with respect to its BFS order. Attaching one of the children of $v$ to $u$ instead of $v$ (we recall here that $d'_l > 1$ so there is such a child) gives a tree whose degree sequence is $D''$.
 \end{proof}
 
 \subsection{Packed indices}
 
-We call index any function $f$ mapping every tree to a real value. We call rooted index any function $f$ mapping every rooted tree to a real value.
+We call index any function mapping every tree to a real value. We call rooted index any function mapping every rooted tree to a real value.
 
 \begin{defi}\label{def:packed}
 We say that an index $\phi$ is packed if whenever \textbf{A.} applies to some tree $T$ then \textbf{B.} also applies to $T$:
@@ -300,7 +309,7 @@ Indeed one has
 	& = & x + \lambda y + \mu x y + \lambda z + \mu (x + \lambda y + \mu x y) z \\
 	& = & x + (\lambda + \mu x) (y+z + \mu y z).
 \end{eqnarray*}
-We define the rooted index $\rindexsymbol$ as follows. For every rooted tree $\rtree{T}{r}$ if $r$ is the only vertex of $T$ then $\rindex{r}{T} = \wmap(r)$. Otherwise $r$ has a son $u$ in $\rtree{T}{r}$ and we let $T_2$ and $T_1$ denote respectively the subtree of $T$ induced by the offspring of $u$ in $\rtree{T}{r}$ and the subtree of $T$ induced by the other vertices (that are not in the offspring). The vertices $u$ and $r$ belong respectively to $T_2$ and $T_1$ and the tree $T$ is obtained from the disjoint union of $T_2$ and $T_1$ by adding the edge $ur$. We set
+We define the rooted index $\rindexsymbol$ as follows. For every rooted tree $\rtree{T}{r}$ if $r$ is the only vertex of $T$ then $\rindex{r}{T} = \wmap(r)$. Otherwise $r$ has a child $u$ in $\rtree{T}{r}$ and we let $T_2$ and $T_1$ denote respectively the subtree of $T$ induced by the offspring of $u$ in $\rtree{T}{r}$ and the subtree of $T$ induced by the other vertices (that are not in the offspring). The vertices $u$ and $r$ belong respectively to $T_2$ and $T_1$ and the tree $T$ is obtained from the disjoint union of $T_2$ and $T_1$ by adding the edge $ur$. We set
 \begin{eqnarray}
 	\rindex{r}{T} & = & \bilinear(\rindex{r}{T_1}, \rindex{u}{T_2}). \label{eq:rindex-tree-decomp}
 \end{eqnarray}
@@ -332,7 +341,7 @@ where for each $r \in R$ the tree $T_r$ denotes the connected component of $F$ c
 We also obtain a recursion summarized by Lemma~\ref{lem:local-index-recursion}.
 
 \begin{lem}\label{lem:local-index-recursion}
-	Consider a rooted tree $\rtree{T}{r}$ and let $S$ denote the (possibly empty) set of the sons of $r$ in $\rtree{T}{r}$. Then
+	Consider a rooted tree $\rtree{T}{r}$ and let $S$ denote the (possibly empty) set of the children of $r$ in $\rtree{T}{r}$. Then
 \begin{eqnarray*}
 	\rindex{r}{T} = \bilinear(\wmap(r), \rindex{S}{F})
 \end{eqnarray*}
@@ -357,7 +366,7 @@ where $X = \rindex{S'}{F'} + \rindex{u}{T_2} + \mu \rindex{S'}{F'} \rindex{u}{T_
 \end{proof}
 
 \begin{cor}\label{cor:local-index-recursion}
-	Consider a rooted tree $\rtree{T}{r}$ and a (possibly empty) subset $S$ of the sons of $r$ in $\rtree{T}{r}$. We are interested in the forest $F$ obtained from $T$ by removing the edge $rs$ for every $s \in S$. Then
+	Consider a rooted tree $\rtree{T}{r}$ and a (possibly empty) subset $S$ of the children of $r$ in $\rtree{T}{r}$. We are interested in the forest $F$ obtained from $T$ by removing the edge $rs$ for every $s \in S$. Then
 \begin{eqnarray*}
 	\rindex{r}{T} = \bilinear(\rindex{r}{T_1}, \rindex{S}{F_1})
 \end{eqnarray*}
@@ -626,7 +635,7 @@ We start by proving the preliminary Propositions~\ref{prop:compacity-packing}~,~
 
 
 \begin{prop}\label{prop:compacity-packing}
-Assume $\lambda + \mu > 0$ and $\lambda \neq 1$. Consider a rooted tree $\rtree{T}{r}$ with two distinct vertices $u$ and $v$ such that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$. Consider also a non-empty subset $S$ of the sons of $v$ in $\rtree{T}{r}$ and the tree $T'$ obtained from $T$ by disconnecting the elements of $S$ from $v$ and connecting them to $u$. If $\lambda < 1$ and $\rindex{u}{T} \geq \rindex{v}{T}$ then $\tindex{T'} > \tindex{T}$. If $\lambda > 1$ and $\rindex{u}{T} \leq \rindex{v}{T}$ then $\tindex{T'} < \tindex{T}$.
+Assume $\lambda + \mu > 0$ and $\lambda \neq 1$. Consider a rooted tree $\rtree{T}{r}$ with two distinct vertices $u$ and $v$ such that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$. Consider also a non-empty subset $S$ of the children of $v$ in $\rtree{T}{r}$ and the tree $T'$ obtained from $T$ by disconnecting the elements of $S$ from $v$ and connecting them to $u$. If $\lambda < 1$ and $\rindex{u}{T} \geq \rindex{v}{T}$ then $\tindex{T'} > \tindex{T}$. If $\lambda > 1$ and $\rindex{u}{T} \leq \rindex{v}{T}$ then $\tindex{T'} < \tindex{T}$.
 \end{prop}
 
 \begin{proof}
@@ -774,7 +783,7 @@ So Equation~\eqref{eq:compacity-map-proof-eq4} gives $\alpha < \beta$ from which
 We end this section with the proof of Theorem~\ref{thm:compacity}.
 
 \begin{proof}[Proof of Theorem~\ref{thm:compacity}]
-We prove only the case $\lambda < 1$, the other case being symmetric. We will show that $\indexsymbol$ is packed. Consider a tree $T$ such that every tree $T'$ obtained from $T$ by an edge-switch or a vertex-switch satisfies $\tindex{T'} \leq \tindex{T}$. Consider some vertex $r$ of $T$ such that $\rindex{r}{T}$ is maximal among the vertices of $T$. Consider an ordering $\sigma$ of $\rtree{T}{r}$ such that in $\rtree{T}{r}$ for any two sons $x$ and $y$ of a node $u$ if $x$ is before $y$ in $\sigma(u)$ then $\rindex{x}{T} \geq \rindex{y}{T}$. Our claim is that if two nodes $u$ and $v$ of $T$ are such that $u$ is before $v$ in the BFS order of $\ortree{T}{r}{\sigma}$ then $\rindex{u}{T} \geq \rindex{v}{T}$. By Propositions~\ref{prop:compacity-packing}~and~\ref{prop:compacity-wmap} our claim will prove Theorem~\ref{thm:compacity}.
+We prove only the case $\lambda < 1$, the other case being symmetric. We will show that $\indexsymbol$ is packed. Consider a tree $T$ such that every tree $T'$ obtained from $T$ by an edge-switch or a vertex-switch satisfies $\tindex{T'} \leq \tindex{T}$. Consider some vertex $r$ of $T$ such that $\rindex{r}{T}$ is maximal among the vertices of $T$. Consider an ordering $\sigma$ of $\rtree{T}{r}$ such that in $\rtree{T}{r}$ for any two children $x$ and $y$ of a node $u$ if $x$ is before $y$ in $\sigma(u)$ then $\rindex{x}{T} \geq \rindex{y}{T}$. Our claim is that if two nodes $u$ and $v$ of $T$ are such that $u$ is before $v$ in the BFS order of $\ortree{T}{r}{\sigma}$ then $\rindex{u}{T} \geq \rindex{v}{T}$. By Propositions~\ref{prop:compacity-packing}~and~\ref{prop:compacity-wmap} our claim will prove Theorem~\ref{thm:compacity}.
 
 So let us assume that our claim does not hold and obtain a contradiction. There are two nodes $x$ and $y$ of $T$ such that $x$ is before $y$ in the BFS order of $\ortree{T}{r}{\sigma}$ and $\rindex{x}{T} < \rindex{y}{T}$. We can assume without any loss of generality that $\distance{x}{r}{T}$ is minimal under the previous properties. If $x$ is an ancestor of $y$ then Proposition~\ref{prop:convexity} leads to a contradiction. Also $x$ and $y$ cannot have the same father in $\rtree{T}{r}$ because of our definition of $\sigma$. Hence $x$ and $y$ have distinct fathers in $\rtree{T}{r}$ that we denote by $u$ and $v$ respectively. We assumed $\rindex{x}{T} < \rindex{y}{T}$ and we have $\rindex{u}{T} \geq \rindex{v}{T}$ by minimality of $\distance{x}{r}{T}$ (since $u$ is berfore $v$ in the BFS order of $\ortree{T}{r}{\sigma}$). So by Proposition~\ref{prop:compacity-exchange} the edge-switch of $ux$ and $vy$ gives a tree $T'$ such that $\tindex{T'} > \tindex{T}$ hence contradicting our assumptions.
 \end{proof}
