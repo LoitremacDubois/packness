@@ -18,6 +18,7 @@
 \newcommand{\wmap}{w}
 \newcommand{\wmin}{w_m}
 \newcommand{\size}[1]{|#1|}
+\newcommand{\compose}{\mathbin{\circ}}
 
 % Trees in general
 \newcommand{\vsetof}[1]{V(#1)}
@@ -35,7 +36,7 @@
 \newcommand{\rpclass}[2]{\rtclass^{#1}_{#2}}
 
 % Tree-Path indices
-\newcommand{\bilinear}{b}
+\newcommand{\ourproduct}{b}
 \newcommand{\indexsymbol}{\mathcal{I}}
 \newcommand{\tindex}[1]{\indexsymbol(#1)}
 \newcommand{\rindexsymbol}{\mathcal{J}}
@@ -71,22 +72,23 @@
 
 \section{Background}
 
-In this whole document the following holds. We denote by $\cN$ the set of non-negative integers and by $\cR$ the set of real numbers. We consider some infinite set $\vset$ and some map $\wmap : \vset \to ]0,+\infty[$. We assume that $\wmap$ admits a positive minimum $\wmin > 0$ on at least one element of $\vset$.
+In this whole document the following holds. We denote by $\cN$ the set of non-negative integers and by $\cR$ the set of real numbers. We consider some infinite set $\vset$ and some map $\wmap : \vset \to ]0,+\infty[$ that attains its minimum $\wmin > 0$ on $\vset$.
 
 \subsection{Forests and trees, rooting and ordering}
 
-We call forest any finite (possibly empty) simple (no loops nor multiple edges) undirected graph whose vertices belong to $\vset$ and that does not admit a cycle. We call tree any non-empty connected forest. We insist here on the fact that with our definition the empty forest is not a tree. The set of the vertices of a tree $T$ is denoted by $\vsetof{T}$. Given a pair of (possibly equal) vertices $u$ and $v$ of $T$ we denote by $\distance{u}{v}{T}$ the distance between $u$ and $v$ in $T$: the number of edges of the unique path between $u$ and $v$ in $T$.
+We call forest any finite (possibly empty) simple (no loops nor multiple edges) undirected graph whose vertices belong to $\vset$ and that does not admit a cycle. We call tree any non-empty connected forest (the empty forest is not a tree). The set of the vertices of a tree $T$ is denoted by $\vsetof{T}$. Given (possibly equal) vertices $u$ and $v$ of $T$ the distance $\distance{u}{v}{T}$ is the number of edges of the unique path between $u$ and $v$ in $T$.
 
-A pair $(F,R)$ where $F$ is a forest and $R$ is a set containing exactly one vertex from each connected component of $F$  is called a rooted forest and denoted by $\rtree{F}{R}$ (the empty forest is rooted by $\emptyset$). A rooted tree $\rtree{T}{\{r\}}$ is denoted by $\rtree{T}{r}$ in order to ease the reading. Given two (possibly equal) vertices $u$ and $v$ of $T$ we say that $u$ is an ancestor of $v$ and $v$ an offspring of $u$ in $\rtree{T}{r}$ if $u$ lies on the path between $v$ and $r$ in $T$. We call ordering of $\rtree{T}{r}$ any map $\sigma$ sending each vertex $u$ of $T$ to a total order $\sigma(u)$ on the children of $u$ in $\rtree{T}{r}$. We say that $\ortree{T}{r}{\sigma}$ is an ordered rooted tree.
+A forest $F$ equipped with a set $R$ containing exactly one vertex from each connected component of $F$ is called a rooted forest and denoted by $\rtree{F}{R}$. %(the empty forest is rooted by $\emptyset$)
+A rooted tree $\rtree{T}{\{r\}}$ is denoted by $\rtree{T}{r}$ in order to ease the reading. Given (possibly equal) vertices $u$ and $v$ of $T$ we say that $u$ is an ancestor of $v$ and $v$ an offspring of $u$ in $\rtree{T}{r}$ if $u$ lies on the path between $v$ and $r$ in $T$. We call ordering of $\rtree{T}{r}$ any map $\sigma$ sending each vertex $u$ of $T$ to a total order $\sigma(u)$ on the children of $u$ in $\rtree{T}{r}$. We say that $\ortree{T}{r}{\sigma}$ is an ordered rooted tree.
 
-\bldcomment{`Children' yet undefined.}
+\bldcomment{`Children' yet undefined. `Ordered tree' is commonly used for `ordered rooted tree'.}
 
 From $\ortree{T}{r}{\sigma}$ one constructs a total order on the vertices of $T$ as follows. For any two distinct vertices $u$ and $v$ of $T$ we say that $u$ is before $v$ in the \textit{BFS order} of $\ortree{T}{r}{\sigma}$ if $\distance{u}{r}{T} < \distance{v}{r}{T}$ or if $\distance{u}{r}{T} = \distance{v}{r}{T}$ and $u$ and $v$ have respective ancestors $x$ and $y$ with a common father $z$ in $\rtree{T}{r}$ such that $x$ is before $y$ in $\sigma(z)$. Observe that it would imply that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$.
 
 
 \subsection{Isomorphism}
 
-An isomorphism from a tree $T$ to another tree $T'$ is a bijection $f\colon \vset (T) \to \vset (T')$ such that for every two vertices $u$ and $v$ of $T$ the edge $uv$ belongs to $T$ if and only if the edge $f(u)f(v)$ belongs to $T'$. A labeled isomorphism from a tree $T$ to another tree $T'$ is an isomorphism $f$ from $T$ to $T'$ such that $\wmap(f(v)) = \wmap(v)$ for every vertex $v$ of $T$. A rooted isomorphism from a rooted tree $\rtree{T}{r}$ to another rooted tree $\rtree{T'}{r'}$ is an isomorphism $f$ from $T$ to $T'$ such that $f(r) = r'$. A labeled rooted isomorphism is a rooted isomorphism that is also a labeled isomorphism. An ordered rooted isomorphism from an ordered rooted tree $\ortree{T}{r}{\sigma}$ to another ordered rooted tree $\ortree{T'}{r'}{\sigma'}$ is a rooted isomorphism $f$ from $\rtree{T}{r}$ to $\rtree{T'}{r'}$ such that for every two distinct children $u$ and $v$ of a vertex $w$ in $\rtree{T}{r}$ one has that $u$ is before $v$ in $\sigma(w)$ if and only if $f(u)$ is before $f(v)$ in $\sigma(f(w))$. A labeled ordered rooted isomorphism is an ordered rooted isomorphism that is also a labeled isomorphism.
+An isomorphism from a tree $T$ to another tree $T'$ is a bijection $f\colon \vsetof{T} \to \vsetof{T'}$ such that for every two vertices $u$ and $v$ of $T$ the edge $uv$ belongs to $T$ if and only if the edge $f(u)f(v)$ belongs to $T'$. A labeled isomorphism from $T$ to $T'$ is an isomorphism $f$ from $T$ to $T'$ such that $\wmap \compose f$ and $\wmap$ coincide on $\vsetof{T}$. A rooted isomorphism from a rooted tree $\rtree{T}{r}$ to another rooted tree $\rtree{T'}{r'}$ is an isomorphism $f$ from $T$ to $T'$ such that $f(r) = r'$. A labeled rooted isomorphism is a rooted isomorphism that is also a labeled isomorphism. An ordered rooted isomorphism from an ordered rooted tree $\ortree{T}{r}{\sigma}$ to another ordered rooted tree $\ortree{T'}{r'}{\sigma'}$ is a rooted isomorphism $f$ from $\rtree{T}{r}$ to $\rtree{T'}{r'}$ such that for every two distinct children $u$ and $v$ of a vertex $w$ in $\rtree{T}{r}$ one has that $u$ is before $v$ in $\sigma(w)$ if and only if $f(u)$ is before $f(v)$ in $\sigma'(f(w))$. A labeled ordered rooted isomorphism is an ordered rooted isomorphism that is also a labeled isomorphism.
 
 \subsection{Degree sequences}
 
@@ -94,29 +96,22 @@ The degree sequence of a tree %$T$ with $n$ vertices
 is the sequence %$(d_1, \dots, d_n)$ 
 of the degrees of its vertices of given in non-increasing order. The rooted degree sequence of a rooted tree $\rtree{T}{r}$ with $n$ vertices is the sequence $(d, d_1, \dots, d_{n-1})$ where $d$ is the degree of $r$ in $T$ and $d_1, \dots, d_{n-1}$ are the degrees of the other vertices of $T$ in non-increasing order.
 
-Consider an ordered rooted tree $\ortree{T}{r}{\sigma}$ and let $n$ denote the number of vertices of $T$. One can consider the integer sequence $D = (d_1, \dots, d_n)$ where for each $k \in [n]$ the integer $d_k$ is the degree in $T$ of the $k^{th}$ vertex of $T$ in the BFS order of $\ortree{T}{r}{\sigma}$. We say that $D$ is the \textit{BFS degree sequence} of $\ortree{T}{r}{\sigma}$. It is easily seen that this sequence is preserved under ordered rooted isomorphism and is unique to each equivalence class for the ordered rooted isomorphism equivalence. It can also be shown that a sequence $(d_1, \dots, d_n) \in (\cN \setminus \{0\})^n$ for some $n \geq 1$ is the BFS degree sequence of an ordered rooted tree if and only if
+The \emph{BFS degree sequence} of an ordered rooted tree is the sequence of its vertex degrees in BFS order. It is easily seen that this sequence is preserved under ordered rooted isomorphism and is unique to each equivalence class for the ordered rooted isomorphism equivalence. It can also be shown that a tuple $(d_1, \dots, d_n) \in (\cN \setminus \{0\})^n$ for some $n \geq 1$ is the BFS degree sequence of an ordered rooted tree if and only if
 \begin{equation}
 	\underset{k=1}{\overset{n}{\sum}} d_k = 2n - 2 \label{eq:valid-seq}.
 \end{equation}
 Observe that the degree sequence of the tree $T$ is obtained by sorting the elements of the BFS degree sequence of $\ortree{T}{r}{\sigma}$ in non-increasing order and that for any root $r$ and any ordering $\sigma$ of $\rtree{T}{r}$. Similarly the rooted degree sequence of $\rtree{T}{r}$ is obtained by sorting the elements of the BFS degree sequence of $\ortree{T}{r}{\sigma}$ except the first one.
 
-In this document any BFS degree sequence, any rooted degree sequence and any degree sequence is implicitly assumed to satisfy Equation~\eqref{eq:valid-seq}.
+In this document any BFS degree sequence, any rooted degree sequence and any degree sequence is assumed to satisfy Equation~\eqref{eq:valid-seq}.
 
-\subsection{Proper classes}
-
-We call class any non-empty set of trees that all have the same (finite and non-empty, by definition of a tree) subset of $\vset$ as their vertex set. We call rooted class any non-empty set of rooted trees whose underlying trees all have the same subset of $\vset$ as their vertex set. Observe that with our definition classes and rooted classes are both non-empty and finite.
+\subsection{Classes}
 
 \begin{defi}
-We say that a class $\tclass$ is proper if for every two trees $T$ and $T'$ such that $T \in \tclass$ if $T$ and $T'$ have the same vertex set and the same degree sequence then $T' \in \tclass$. We say that a rooted class $\rtclass$ is proper if for every two rooted trees $\rtree{T}{r}$ and $\rtree{T'}{r'}$ such that $\rtree{T}{r} \in \rtclass$ if $\rtree{T}{r}$ and $\rtree{T'}{r'}$ have the same vertex set and the same rooted degree sequence then $\rtree{T'}{r'} \in \rtclass$.
+For every finite non-empty $V \subset \vset$ and every non-empty set $S$ of degree sequences of length $\size{V}$, denote by $\pclass{V}{S}$ the set containing exactly the trees whose vertex set is $V$ and whose degree sequence belongs to $S$. We call class any set of the form $\pclass{V}{S}$. Now consider also some non-empty set $S'$ of rooted degree sequences of length $\size{V}$. We denote by $\rpclass{V}{S'}$ the set containing exactly the rooted trees whose vertex set is $V$ and whose rooted degree sequence belongs to $S'$. We call rooted class any set of the form $\rpclass{V}{S'}$.
 \end{defi}
-
-Consider some finite non-empty $V \subset \vset$ and some non-empty set $S$ of degree sequences of length $\size{V}$. We denote by $\pclass{V}{S}$ the set containing exactly the trees whose vertex set is $V$ and whose degree sequence belongs to $S$. The set $\pclass{V}{S}$ is a proper class and every proper class is such a set. Now consider also some non-empty set $S'$ of rooted degree sequences of length $\size{V}$. We denote by $\rpclass{V}{S'}$ the set containing exactly the rooted trees whose vertex set is $V$ and whose rooted degree sequence belongs to $S'$. The set $\rpclass{V}{S'}$ is a proper rooted class and every proper rooted class is such a set.
-
-\bldcomment{`Every proper class is such a set' seems false.}
 
 \subsection{Vertex-switch and edge-switch}
 
-\bldcomment{External neighborhood is a nonstandard term for `set of children'}
 \begin{defi}
 Assume that a tree $T$ has two distinct vertices $u$ and $v$ whose external neighborhoods in $T$ are respectively $N_u$ and $N_v$. Removing the edges between $u$ and $N_u$ and between $v$ and $N_v$ and then adding the edges between $u$ and $N_v$ and between $v$ and $N_u$ gives a tree $T'$. We say that $T'$ is obtained from $T$ by the vertex-switch of the vertices $u$ and $v$. Given a vertex $r$ of $T$ we set $r' = r$ if $r \notin \{u,v\}$, $r' = v$ if $r = u$ and $r' = u$ if $r = v$ and we say that the rooted tree $\rtree{T'}{r'}$ is obtained from the rooted tree $\rtree{T}{r}$ by the rooted vertex-switch of $u$ and $v$.
 \end{defi}
@@ -129,9 +124,10 @@ Vertex-switch and edge-switch preserve the vertex set and the degree sequence of
 
 \begin{rem}\label{rem:proper}
 %A class $\tclass$ is proper if and only if every tree obtained from some element of $\tclass$ by a vertex-switch or by an edge-switch also belongs to $\tclass$. A rooted class $\rtclass$ is proper if and only if every rooted tree obtained from some element of $\rtclass$ by a rooted vertex-switch or by a rooted edge-switch also belongs to $\rtclass$.
-A class is proper if and only if it is closed under vertex-switch and edge-switch. A rooted class is proper if and only if it is closed under rooted vertex-switch and rooted edge-switch.
+A finite, nonempty set of trees is a class if and only if it is closed under vertex-switch and edge-switch. A finite, nonempty set of rooted trees is a rooted class if and only if it is closed under rooted vertex-switch and rooted edge-switch.
 \end{rem}
 
+\bldcomment{For now we do not use arity.}
 \subsection{Arity}
 
 Consider some $k \geq 1$. We say that a tree $T$ is $k$-ary if every vertex of $T$ has degree at most $k+1$ in $T$. We say that $T$ is proper $k$-ary if every vertex of $T$ as degree either $1$ or $k+1$. We say that a rooted tree $\rtree{T}{r}$ is rooted $k$-ary if $r$ has degree at most $k$ and every (other) vertex of $T$ has degree at most $k+1$. We say that $\rtree{T}{r}$ is proper rooted $k$-ary if the degree of $r$ in $T$ is $k$ and the degree of every other vertex of $T$ is either $1$ or $k+1$. 
@@ -146,14 +142,14 @@ Assume that an ordered rooted tree $\ortree{T}{r}{\sigma}$ admits some vertex $v
 \end{defi}
 
 \begin{defi}
-We say that an ordered rooted tree $\ortree{T}{r}{\sigma}$ is greedy for a proper class $\tclass$ if $T$ belongs to $\tclass$ and every $T'$ obtained from $\ortree{T}{r}{\sigma}$ by a packing does not belong to $\tclass$ and $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$. We say that $\ortree{T}{r}{\sigma}$ is greedy for a proper rooted class $\rtclass$ if $\rtree{T}{r}$ belongs to $\rtclass$ and every $\rtree{T'}{r}$ obtained from $\ortree{T}{r}{\sigma}$ by a packing does not belong to $\rtclass$ and $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$.
+We say that an ordered rooted tree $\ortree{T}{r}{\sigma}$ is greedy for a class $\tclass$ if $T$ belongs to $\tclass$ and every $T'$ obtained from $\ortree{T}{r}{\sigma}$ by a packing does not belong to $\tclass$ and $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$. We say that $\ortree{T}{r}{\sigma}$ is greedy for a rooted class $\rtclass$ if $\rtree{T}{r}$ belongs to $\rtclass$ and every $\rtree{T'}{r}$ obtained from $\ortree{T}{r}{\sigma}$ by a packing does not belong to $\rtclass$ and $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$.
 \end{defi}
 
-Consider some finite non-empty $V \subset \vset$ and some degree sequence $D$ of length $\size{V}$. The proper class $\pclass{V}{\{D\}}$ admits, up to labeled ordered rooted isomorphism, a unique greedy ordered rooted tree that we denote by $\greedy{V}{D}$. The BFS degree sequence of $\greedy{V}{D}$ is $D$. Observe that this is an abuse of notation as $\greedy{V}{D}$ actually denotes an equivalence class for the labeled ordered rooted isomorphism equivalence. Given a non-empty set $S$ of degree sequences of length $\size{V}$ the greedy ordered rooted trees of $\pclass{V}{S}$ all belong to $\{\greedy{V}{D'} \;:\; D' \in S\}$.
+Consider some finite non-empty $V \subset \vset$ and some degree sequence $D$ of length $\size{V}$. The class $\pclass{V}{\{D\}}$ admits, up to labeled ordered rooted isomorphism, a unique greedy ordered rooted tree which we denote by $\greedy{V}{D}$. The BFS degree sequence of $\greedy{V}{D}$ is $D$. Observe that this is an abuse of notation as $\greedy{V}{D}$ actually denotes an equivalence class for the labeled ordered rooted isomorphism equivalence. Given a non-empty set $S$ of degree sequences of length $\size{V}$ the greedy ordered rooted trees of $\pclass{V}{S}$ all belong to $\{\greedy{V}{D'} \;:\; D' \in S\}$.
 
-Now consider some rooted degree sequence $E$ of length $\size{V}$. The proper rooted class $\rpclass{V}{\{E\}}$ admits, up to labeled ordered rooted isomorphism, a (again, abusively) unique greedy ordered rooted tree that we denote by $\greedy{V}{E}$. The BFS degree sequence of $\greedy{V}{E}$ is $E$. Observe that there is no clash of notation here since if $D = E$ then $\pclass{V}{\{D\}}$ and $\rpclass{V}{\{E\}}$ admit the same unique greedy ordered rooted tree. Given a non-empty set $S'$ of rooted degree sequences of length $\size{V}$ the greedy ordered rooted trees of $\rpclass{V}{S'}$ all belong to $\{\greedy{V}{E'} \;:\; E' \in S'\}$. 
+Now consider some rooted degree sequence $E$ of length $\size{V}$. The rooted class $\rpclass{V}{\{E\}}$ admits, up to labeled ordered rooted isomorphism, a (again, abusively) unique greedy ordered rooted tree that we denote by $\greedy{V}{E}$. The BFS degree sequence of $\greedy{V}{E}$ is $E$. Observe that there is no clash of notation here since if $D = E$ then $\pclass{V}{\{D\}}$ and $\rpclass{V}{\{E\}}$ admit the same unique greedy ordered rooted tree. Given a non-empty set $S'$ of rooted degree sequences of length $\size{V}$ the greedy ordered rooted trees of $\rpclass{V}{S'}$ all belong to $\{\greedy{V}{E'} \;:\; E' \in S'\}$. 
 
-It will follow from Corollary~\ref{cor:majorization} that every proper class and every proper rooted class admits at least one greedy ordered rooted tree.
+It will follow from Corollary~\ref{cor:majorization} that every class and every rooted class admits at least one greedy ordered rooted tree.
 
 %\begin{figure}[H]
 %\small
@@ -181,21 +177,21 @@ It will follow from Corollary~\ref{cor:majorization} that every proper class and
 %			& and $l$ leaves & \\
 %			& where $n=$\ldtodo{.} & \\ \hline
 %\end{tabular}
-%\caption{Proper classes and rooted classes admitting a unique greedy ordered rooted tree} \label{fig:greedy-elements}
+%\caption{Proper classes and rooted es admitting a unique greedy ordered rooted tree} \label{fig:greedy-elements}
 %\end{figure}
 
 \subsection{Majorizers}\label{section:majorization}
 
-Consider $n \geq 1$. For every positive integer sequence $(p_1, \dots, p_n)$ and every $k \in [n]$ we introduce the notation
+Consider $n \geq 1$. For every positive integer $n$-tuple $(p_1, \dots, p_n)$ and every $k \in [n]$ we introduce the notation
 \begin{equation*}
 	p^{\Sigma}_k = \underset{i=1}{\overset{k}{\sum}} p_i.
 \end{equation*}
-A positive integer sequence $(p_1, \dots, p_n)$ majorizes another positive integer sequence $(q_1, \dots, q_n)$ whenever $p^{\Sigma}_k \geq q^{\Sigma}_k$ for every $k \in [n]$. Majorization is a partial order on the positive integer sequences of length $n$. 
+A positive integer tuple $(p_1, \dots, p_n)$ majorizes another positive integer tuple $(q_1, \dots, q_n)$ whenever $p^{\Sigma}_k \geq q^{\Sigma}_k$ for every $k \in [n]$. Majorization is a partial order on positive integer tuples of length $n$, including (rooted) degree sequences.% so in particular on (rooted) degree sequences of the same length.
 
-A degree sequence $D$ majorizes another degree sequence $E$ of the same length when $D$ majorizes $E$ as a sequence of positive integers. The same definition is taken for rooted degree sequences.
+%A degree sequence $D$ majorizes another degree sequence $E$ of the same length when $D$ majorizes $E$ as a tuple of positive integers. The same definition is taken for rooted degree sequences.
 
 \begin{defi}
-Given a proper class $\pclass{V}{S}$ and some $D \in S$ we say that $\greedy{V}{D}$ is a majorizer for $\pclass{V}{S}$ if $D$ is a maximal element for majorization among $S$. Given a proper rooted class $\rpclass{V'}{S'}$ and some $E \in S'$ we say that $\greedy{V}{E}$ is a majorizer for $\rpclass{V'}{S'}$ if $E$ is a maximal element for majorization among $S'$.
+Given a class or rooted class $\pclass{V}{S}$ and some $D \in S$ we say that the tree $\greedy{V}{D}$ is a majorizer for $\pclass{V}{S}$ if $D$ is a maximal element for majorization among $S$.
 \end{defi}
 
 \begin{rem}\label{rem:majorization}
@@ -203,7 +199,7 @@ Consider some finite non-empty $V \subset \vset$, some degree sequence $D$ of le
 \end{rem}
 
 \begin{cor}\label{cor:majorization}
-If an ordered rooted tree is a majorizer for a proper (rooted) class then it is greedy for this same (rooted) class.
+If an ordered rooted tree is a majorizer for a (rooted) class then it is greedy for this same (rooted) class.
 \end{cor}
 
 \begin{prop}\label{prop:majorization}
@@ -213,7 +209,7 @@ Consider some finite non-empty $V \subset \vset$ and two degree sequences $D$ an
 \begin{proof}
 We only consider $D$ and $D'$ as the proof for $E$ and $E'$ is similar.
 
-We recall that the BFS degree sequence of $\greedy{V}{D'}$ is $D'$. Let us write $D = (d_1, \dots, d_n)$ and $D' = (d'_1, \dots, d'_n)$ with $n = \size{V}$. Consider the least index $k \in [n]$ such that $d_k \neq d'_k$ and the difference $d_k - d'_k$. The first exists since we assumed that $D$ and $D'$ are distinct. The second is positive since $D$ majorizes $D'$. Since both $D$ and $D'$ satisfy Equation~\eqref{eq:valid-seq} then $k < n$ and $d'_{k+1} > 1$ (we recall here that degree sequences are non-increasing sequences of positive integers). So we can consider $l > k$ maximal such that $d'_l = d'_{k+1}$ and we have $d'_l > 1$. Now let $D''$ be the $n$-uplet constructed from $D'$ by replacing the $k^{th}$ value by $d'_k+1$ and the $l^{th}$ value by $d'_l-1$. The $n$-uplet $D''$ is a non-increasing (since if $k > 1$ then $d'_k < d_k \leq d_{k-1} = d'_{k-1}$ and also since if $l < n$ then $d'_l > d'_{l+1}$) sequence of positive integers (since $d'_l > 1$) satisfying Equation~\eqref{eq:valid-seq} so $D''$ is a degree sequence. We claim that $D$ majorizes $D''$ and that $\greedy{V}{D'}$ can be packed to a tree whose degree sequence is $D''$.
+We recall that the BFS degree sequence of $\greedy{V}{D'}$ is $D'$. Let us write $D = (d_1, \dots, d_n)$ and $D' = (d'_1, \dots, d'_n)$ with $n = \size{V}$. Consider the least index $k \in [n]$ such that $d_k \neq d'_k$, which exists since $D$ and $D'$ are distinct. The difference $d_k - d'_k$ is positive since $D$ majorizes $D'$. Since both $D$ and $D'$ satisfy Equation~\eqref{eq:valid-seq} then $k < n$ and $d'_{k+1} > 1$ (we recall here that degree sequences are non-increasing tuples of positive integers). So we can consider $l > k$ maximal such that $d'_l = d'_{k+1}$ and we have $d'_l > 1$. Now let $D''$ be the $n$-tuple constructed from $D'$ by replacing the $k^{th}$ value by $d'_k+1$ and the $l^{th}$ value by $d'_l-1$. The $n$-tuple $D''$ is a non-increasing (since if $k > 1$ then $d'_k < d_k \leq d_{k-1} = d'_{k-1}$ and also since if $l < n$ then $d'_l > d'_{l+1}$) tuple of positive integers (since $d'_l > 1$) satisfying Equation~\eqref{eq:valid-seq} so $D''$ is a degree sequence. We claim that $D$ majorizes $D''$ and that $\greedy{V}{D'}$ can be packed to a tree whose degree sequence is $D''$.
 
 Let us assume our first claim is false and obtain a contradiction. There is $i \in \{k+1, \dots, l-1\}$ such that $d^{\Sigma}_i < d''^{\Sigma}_i$. So $d^{\Sigma}_i \leq d'^{\Sigma}_i$ and we have equality since $D$ majorizes $D'$. But since $d^{\Sigma}_k > d'^{\Sigma}_k$ and since $D$ and $D'$ are non-increasing then $d_i < d'{k+1}$.  From that we conclude $d^{\Sigma}_l < (l-i) d'_{k+1} + d^{\Sigma}_i \leq (l-i) d'_{k+1} + d'^{\Sigma}_i = d'^{\Sigma}_l$ hence contradicting the assumption that $D$ majorizes $D'$. 
 
@@ -222,12 +218,12 @@ To prove our second claim let $u$ and $v$ denote respectively the $k^{th}$ and t
 
 \subsection{Packed indices}
 
-We call index any function mapping every tree to a real value. We call rooted index any function mapping every rooted tree to a real value.
+We call (rooted) index any function mapping every (rooted) tree to a real value.
 
 \begin{defi}\label{def:packed}
 We say that an index $\phi$ is packed if whenever \textbf{A.} applies to some tree $T$ then \textbf{B.} also applies to $T$:
 \begin{itemize}
-	\item[\textbf{A.}] Every $T'$ obtained from $T$ by an edge-switch or a vertex-switch satisfies $\phi(T') \leq \phi(T)$.
+	\item[\textbf{A.}] Every $T'$ obtained from $T$ by an edge- or vertex-switch satisfies $\phi(T') \leq \phi(T)$.
 	\item[\textbf{B.}] There is a vertex $r$ of $T$ and an ordering $\sigma$ of $\rtree{T}{r}$ satisfying both of the following:
 	\begin{itemize}
 		\item[-] Every $T'$ obtained from $\ortree{T}{r}{\sigma}$ by a packing satisfies $\phi(T') > \phi(T)$.
@@ -249,11 +245,11 @@ We say that a rooted index $\psi$ is packed if whenever \textbf{C.} applies to s
 \end{defi}
 
 \begin{thm}\label{thm:maximal-is-majorizer}
-Consider a proper class $\tclass$ and a packed index $\phi$. If a tree $T \in \tclass$ is such that $\phi(T)$ is maximal among $\tclass$ then there is a vertex $r$ of $T$ and an ordering $\sigma$ of $\rtree{T}{r}$ such that $\ortree{T}{r}{\sigma}$ is a majorizer for $\tclass$. Consider a proper rooted class $\rtclass$ and a packed rooted index $\psi$. If a rooted tree $\rtree{T}{r} \in \rtclass$ is such that $\psi(\rtree{T}{r})$ is maximal among $\rtclass$ then there is an ordering $\sigma$ of $\rtree{T}{r}$ such that $\ortree{T}{r}{\sigma}$ is a majorizer for $\rtclass$. 
+Consider a class $\tclass$ and a packed index $\phi$. If a tree $T \in \tclass$ is such that $\phi(T)$ is maximal among $\tclass$ then there is a vertex $r$ of $T$ and an ordering $\sigma$ of $\rtree{T}{r}$ such that $\ortree{T}{r}{\sigma}$ is a majorizer for $\tclass$. Consider a rooted class $\rtclass$ and a packed rooted index $\psi$. If a rooted tree $\rtree{T}{r} \in \rtclass$ is such that $\psi(\rtree{T}{r})$ is maximal among $\rtclass$ then there is an ordering $\sigma$ of $\rtree{T}{r}$ such that $\ortree{T}{r}{\sigma}$ is a majorizer for $\rtclass$. 
 \end{thm}
 
 \begin{proof}
-We only prove the case of $\tclass, \phi$ and $T$ since the proof for $\rtclass, \psi$ and $\rtree{T}{r}$ is similar. We write $\tclass = \pclass{V}{S}$ for some $V,S$. Every tree $T'$ obtained from $T$ by an edge-switch or a vertex-switch also belongs to $\tclass$ (since $\tclass$ is proper) and consequently satisfies $\phi(T') \leq \phi(T)$. But $\phi$ is packed so there is a vertex $r$ of $T$ and an ordering $\sigma$ of $\rtree{T}{r}$ satisfying two properties. First the map $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$. Second every $T'$ obtained from $\ortree{T}{r}{\sigma}$ by a packing satisfies $\phi(T') > \phi(T)$ and consequently does not belong to $\tclass$. So $\ortree{T}{r}{\sigma}$ is greedy for $\tclass$ and can be written as $\greedy{V}{D}$ for some $D \in S$. Now if $\greedy{V}{D}$ was not a majorizer for $\tclass$ then there would be a degree sequence $D' \in S$ distinct from and majorizing $D$. Proposition~\ref{prop:majorization} would then give a sequence $D_1, \dots, D_n$ of degree sequences where $n \geq 2$, $D_1 = D$, $D_n = D'$ and such that for every $k \in [n-1]$ there is some tree $T_{k+1} \in \pclass{V}{D_{k+1}}$ obtained from $\greedy{V}{D_k}$ by a packing, leading to $\phi(T_n) > \phi(T)$ since $\phi$ is packed.
+We only prove the case of $\tclass, \phi$ and $T$ since the proof for $\rtclass, \psi$ and $\rtree{T}{r}$ is similar. We write $\tclass = \pclass{V}{S}$ for some $V,S$. Every tree $T'$ obtained from $T$ by an edge-switch or a vertex-switch also belongs to $\tclass$ (since $\tclass$ is a class) and consequently satisfies $\phi(T') \leq \phi(T)$. But $\phi$ is packed so there is a vertex $r$ of $T$ and an ordering $\sigma$ of $\rtree{T}{r}$ satisfying two properties. First the map $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$. Second every $T'$ obtained from $\ortree{T}{r}{\sigma}$ by a packing satisfies $\phi(T') > \phi(T)$ and consequently does not belong to $\tclass$. So $\ortree{T}{r}{\sigma}$ is greedy for $\tclass$ and can be written as $\greedy{V}{D}$ for some $D \in S$. Now if $\greedy{V}{D}$ was not a majorizer for $\tclass$ then there would be a degree sequence $D' \in S$ distinct from and majorizing $D$. Proposition~\ref{prop:majorization} would then give a sequence $D_1, \dots, D_n$ of degree sequences where $n \geq 2$, $D_1 = D$, $D_n = D'$ and such that for every $k \in [n-1]$ there is some tree $T_{k+1} \in \pclass{V}{D_{k+1}}$ obtained from $\greedy{V}{D_k}$ by a packing, leading to $\phi(T_n) > \phi(T)$ since $\phi$ is packed.
 \end{proof}
 
 
@@ -262,13 +258,13 @@ Theorem~\ref{thm:maximal-is-majorizer} also holds if we take $\phi$ to be a non-
 \end{cor}
 
 \begin{proof}
-We only prove the case of $\tclass, \phi$ and $T$ since the proof for $\rtclass, \psi$ and $\rtree{T}{r}$ is similar.  We write $\tclass = \pclass{V}{S}$ for some $V,S$. We also consider packed indices $\phi_1, \dots, \phi_n$ for some $n \geq 1$ such that $\phi = \phi_1 + \dots + \phi_n$. Let $D \in S$ being a maximal element for majorization among $S$ and $S_D \subseteq S$ be the set of degree sequences in $S$ that are majorized by $D$. Theorem~\ref{thm:maximal-is-majorizer} gives that for every $k \in [n]$ the tree underlying $\greedy{V}{D}$ is the unique (up to labeled isomorphism) element of $\smallpclass{V}{S_D}$ maximizing $\phi_k$.
+We only prove the case of $\tclass, \phi$ and $T$ since the proof for $\rtclass, \psi$ and $\rtree{T}{r}$ is similar.  We write $\tclass = \pclass{V}{S}$ for some $V,S$. We also consider packed indices $\phi_1, \dots, \phi_n$ for some $n \geq 1$ such that $\phi = \phi_1 + \dots + \phi_n$. Let $D \in S$ being a maximal element for majorization among $S$ and $S_D \subseteq S$ be the set of degree sequences in $S$ that are majorized by $D$. Theorem~\ref{thm:maximal-is-majorizer} gives that for every $k \in [n]$ the tree underlying $\greedy{V}{D}$ is, up to labeled isomorphism, the unique element of $\smallpclass{V}{S_D}$ maximizing $\phi_k$.
 \end{proof}
 
-In Corollary~\ref{cor:maximal-limit} when we say that a sequence of (rooted) indices $(\phi_n)_{n \in \cN}$ converges to some (rooted) index $\phi$ on some proper (rooted) class $\tclass$ it means that for every (rooted) tree $T \in \tclass$ the sequence $(\phi_n(T))_{n \in \cN}$ converges to $\phi(T)$ in $\cR$ equipped with the usual topology.
+If $(\phi_n)_{n \in \cN}$ is a sequence of (rooted) indices, $\phi$ is a (rooted) index and $\tclass$ a (rooted) class, we say that $\phi$ is the limit of $(\phi_n)_{n \in \cN}$ on $\tclass$ when for every (rooted) tree $T \in \tclass$ the sequence $(\phi_n(T))_{n \in \cN}$ converges to $\phi(T)$.
 
 \begin{cor}\label{cor:maximal-limit}
-Consider a proper class $\tclass$ and an index $\phi$ that is, on $\tclass$, the limit of a sequence $(\phi_n)_{n \in \cN}$ of indices where for each $n \in \cN$ the index $\phi_n$ can be expressed as a non-empty finite sum of packed indices. There is a majorizer $\ortree{T}{r}{\sigma}$ of $\tclass$ such that $T$ maximizes $\phi$ among $\tclass$. Consider a proper rooted class $\rtclass$ and a rooted index $\psi$ that is, on $\rtclass$, the limit of a sequence $(\psi_n)_{n \in \cN}$ of rooted indices where for each $n \in \cN$ the rooted index $\psi_n$ can be expressed as a non-empty finite sum of packed rooted indices. There is a majorizer $\ortree{T}{r}{\sigma}$ of $\rtclass$ such that $\rtree{T}{r}$ maximizes $\psi$ among $\rtclass$.
+Consider a class $\tclass$ and an index $\phi$ that is, on $\tclass$, the limit of a sequence $(\phi_n)_{n \in \cN}$ of indices where for each $n \in \cN$ the index $\phi_n$ can be expressed as a finite sum of packed indices. There is a majorizer $\ortree{T}{r}{\sigma}$ of $\tclass$ such that $T$ maximizes $\phi$ among $\tclass$. Consider a rooted class $\rtclass$ and a rooted index $\psi$ that is, on $\rtclass$, the limit of a sequence $(\psi_n)_{n \in \cN}$ of rooted indices where for each $n \in \cN$ the rooted index $\psi_n$ can be expressed as a finite sum of packed rooted indices. There is a majorizer $\ortree{T}{r}{\sigma}$ of $\rtclass$ such that $\rtree{T}{r}$ maximizes $\psi$ among $\rtclass$.
 \end{cor}
 
 \begin{proof}
@@ -277,100 +273,131 @@ The result follows from Corollary~\ref{cor:maximal-finite-sum} and from the obse
 
 We conclude this subsection by giving two counter-examples to stronger versions of Theorem~\ref{thm:maximal-is-majorizer} and Corollaries~\ref{cor:maximal-finite-sum}~and~\ref{cor:maximal-limit}. We only deal with classes and indices and not rooted classes and rooted indices.
 
-Consider some $V \subset \vset$ with 8 vertices and let $D_1 = (4, 2, 2, 2, 1, 1, 1, 1)$ and $D_2 = (3, 3, 3, 1, 1, 1, 1, 1)$. Let $\ortree{T_1}{r_1}{\sigma_1}$ be an ordered rooted tree on $V$ whose BFS degree sequence is $D_1$, and $\ortree{T_2}{r_2}{\sigma_2}$ be defined analogously for $D_2$. Let $\phi_1$ be the index mapping every tree $T$ to the number of subtrees of $T$ and $\phi_2$ be the index mapping every tree $T$ to the sum for every subtree $T'$ of $T$ of $2^e$ where $e$ is the number of edges of $T'$. Both $\phi_1$ and $\phi_2$ are packed indices (as particular Tree-Path indices with $\wmap(\vset) = \{1\}$, $\lambda = 0$ and $\mu \in \{1,2\}$, see Section~\ref{section:tp-indices} for details). We have $\phi_1(T_1) = 64 > 63 = \phi_1(T_2)$ and $\phi_2(T_1) = 1042 < 1106 = \phi_2(T_2)$.
+Let $\ortree{T_1}{r_1}{\sigma_1}$ and $\ortree{T_2}{r_2}{\sigma_2}$ be ordered rooted trees on eight vertices with respective BFS degree sequences $(4, 2, 2, 2, 1, 1, 1, 1)$ and $(3, 3, 3, 1, 1, 1, 1, 1)$. Let $\phi_1$ be the index mapping every tree $T$ to the number of subtrees of $T$ and $\phi_2$ be the index mapping every tree $T$ to the sum over each subtree $T'$ of $T$ of $2^e$ where $e$ is the number of edges of $T'$. Both $\phi_1$ and $\phi_2$ are packed indices (as particular Tree-Path indices with $\wmap(\vset) = \{1\}$, $\lambda = 0$ and $\mu \in \{1,2\}$, see Section~\ref{section:tp-indices} for details). We have $\phi_1(T_1) = 64 > 63 = \phi_1(T_2)$ and $\phi_2(T_1) = 1042 < 1106 = \phi_2(T_2)$.
 
 \begin{center}
 	\includegraphics[scale=0.5]{figures/counter-example}
 \end{center}
 
-Finally consider a proper class $\tclass$ containing at least two trees. Consider also the index $\phi$ mapping every tree with $n$ vertices to the positive integer ${n+1}\choose{2}$. The index $\phi$ is easily seen to be the limit of a sequence of packed indices from Section~\ref{section:tp-indices} (with $\wmap(\vset)= \{1\}$, $\mu = 0$ and $\lambda \rightarrow 1$). And every element of $\tclass$ is a maximal element with respect to $\phi$ so $\tclass$ does not admit a unique maximal element for $\phi$. 
+Finally consider a class $\tclass$ containing at least two trees. Consider also the index $\phi$ mapping every tree with $n$ vertices to the positive integer $\binom{n+1}{2}$. The index $\phi$ is easily seen to be the limit of a sequence of packed indices from Section~\ref{section:tp-indices} (with $\wmap(\vset)= \{1\}$, $\mu = 0$ and $\lambda \rightarrow 1$), but %every element of $\tclass$ is a maximal element with respect to $\phi$ so 
+$\tclass$ does not admit a unique maximal element for $\phi$. 
 
 
 
 
 \section{The Tree-Path indices}\label{section:tp-indices}
 
-In this whole section we consider some $(\lambda, \mu) \in [0,+\infty[^2$.
+In this whole section we consider some $(\lambda, \mu) \in [0,+\infty)^2$.
 
 
 \subsection{Introducing the Tree-Path indices}
 
-In this subsection we define and quickly study a rooted index $\rindexsymbol$ and an index $\indexsymbol$. Both indices are parameterized by $\lambda, \mu$ and $\wmap$ even though that will not appear in the notation in order to ease the reading.
+In this subsection we define and quickly study a rooted index $\rindexsymbol$ and an index $\indexsymbol$. Both are parameterized by $\lambda, \mu$ and $\wmap$ even though this is suppressed in the notation in order to ease the reading.
 
 \subsubsection{The rooted Tree-Path index}
+\bldcomment{Convention: $0^0=1$, $\sum_\emptyset \dots = 0$.}
 
-Let $\bilinear : \cR^2 \to \cR$ mapping every $(x,y) \in \cR^2$ to $\bilinear(x,y) = x + \lambda y + \mu x y$. For every $(x,y,z) \in \cR^3$ the following holds:
-\begin{eqnarray}
-	\bilinear(\bilinear(x,y),z) = \bilinear(\bilinear(x,z),y). \label{eq:commutativity}
-\end{eqnarray}
-Indeed one has
-\begin{eqnarray*}
-	\bilinear(\bilinear(x,y),z) & = & \bilinear(x,y) + \lambda z + \mu \bilinear(x,y) z \\
-	& = & x + \lambda y + \mu x y + \lambda z + \mu (x + \lambda y + \mu x y) z \\
-	& = & x + (\lambda + \mu x) (y+z + \mu y z).
-\end{eqnarray*}
+Define an internal composition law on $\cR$ by $x \star y =  x + \lambda y + \mu x y$. For convenience, we give $\star$ precedence over $+$ and $-$ and we opt for notational left-associativity, that is $x\star y \star z = (x \star y) \star z$.  It satisfies a \emph{quasi-commutative property}: 
+\begin{equation}
+    x \star y \star z = x \star z \star y.\label{eq:commutativity}
+\end{equation}  
+More generally, for any positive integer $n$ and $(x_1,\dots,x_n)\in \cR^n$, we have
+\[ x \star x_1 \star \dots \star x_n = x \star \left(\sum_{\substack{S \subset [n]\\S\neq \emptyset}} \mu^{|S|-1} \prod_{i\in S} x_i \right)
+= \begin{cases} x \star \frac{ \left( \prod_{i\in [n]} (1 + \mu x_i) \right)- 1}{\mu}  & \mu \neq 0\\
+x \star  \sum_{i\in [n]} x_i  & \mu = 0 \end{cases}.
+\]
+%It is commutative if and only if $\lambda = 1$ and associative if and only if $\lambda = 1$ or $\lambda = \mu = 0$. 
+
+
+
+
+\bldcomment{$x \star y - y \star x = (x - y)(1 - \lambda)$.  Any two distinct reals commute if and only if $\lambda=1$. Associator: $x \star(y\star z) - (x\star y) \star z = z (\lambda - 1)(\lambda + \mu x)$.}
+
+%Let $\ourproduct : \cR^2 \to \cR$ mapping every $(x,y) \in \cR^2$ to $\ourproduct(x,y) = x + \lambda y + \mu x y$. For every $(x,y,z) \in \cR^3$ the following holds:
+%\begin{eqnarray}
+%	\ourproduct(\ourproduct(x,y),z) = \ourproduct(\ourproduct(x,z),y). \label{eq:commutativity}
+%\end{eqnarray}
+%Indeed one has
+%\begin{eqnarray*}
+%	\ourproduct(\ourproduct(x,y),z) & = & \ourproduct(x,y) + \lambda z + \mu \ourproduct(x,y) z \\
+%	& = & x + \lambda y + \mu x y + \lambda z + \mu (x + \lambda y + \mu x y) z \\
+%	& = & x + (\lambda + \mu x) (y+z + \mu y z).
+%\end{eqnarray*}
 We define the rooted index $\rindexsymbol$ as follows. For every rooted tree $\rtree{T}{r}$ if $r$ is the only vertex of $T$ then $\rindex{r}{T} = \wmap(r)$. Otherwise $r$ has a child $u$ in $\rtree{T}{r}$ and we let $T_2$ and $T_1$ denote respectively the subtree of $T$ induced by the offspring of $u$ in $\rtree{T}{r}$ and the subtree of $T$ induced by the other vertices (that are not in the offspring). The vertices $u$ and $r$ belong respectively to $T_2$ and $T_1$ and the tree $T$ is obtained from the disjoint union of $T_2$ and $T_1$ by adding the edge $ur$. We set
 \begin{eqnarray}
-	\rindex{r}{T} & = & \bilinear(\rindex{r}{T_1}, \rindex{u}{T_2}). \label{eq:rindex-tree-decomp}
+	\rindex{r}{T} & = & \rindex{r}{T_1} \star \rindex{u}{T_2}. \label{eq:rindex-tree-decomp}
 \end{eqnarray}
-Equation~\eqref{eq:commutativity} ensures that this definition does not depend on the choice of $u$. Remarks~\ref{rem:rindex-minimum-value}~and~\ref{rem:rooted-examples} are straightforward.
+Equation~\eqref{eq:commutativity} ensures that this definition does not depend on the choice of $u$. Observations~\ref{rem:rindex-minimum-value}~and~\ref{rem:rooted-examples} are straightforward.
+
+\bldcomment{
+Otherwise $r$ has some number $n$ of children. Let $r_1,\dots,r_n$ be the children of $r$ and for each $k\in[n]$ let $T_k$ be the connected component containing $r_k$ once $r$ is removed from $T$. We set
+\[
+\rindex{r}{T}  =  \wmap(r) \star \rindex{r_1}{T_1} \star \cdots \star \rindex{r_n}{T_n}. \label{eq:rindex-tree-fulldecomp}
+\]
+Equation~\eqref{eq:commutativity} ensures that this definition does not depend on the order of $r_1,\dots, r_n$.
+}
 
 \begin{rem}\label{rem:rindex-minimum-value}
-Every tree $T$ and every vertex $r$ of $T$ satisfy $\rindex{r}{T} \geq \wmin$ and there is a single-vertex rooted tree for which equality holds. If $\lambda + \mu > 0$ then $\rindexsymbol$ is unbounded (from above). If $\lambda = \mu = 0$ then $\rindex{r}{T} = \wmap(r)$ for every tree $T$ and every vertex $r$ of $T$.
+The minimum of $\rindexsymbol$ is $\wmin$, which it attains on a single-vertex rooted tree. If $\lambda + \mu > 0$ then $\rindexsymbol$ is unbounded (from above). If $\lambda = \mu = 0$ then $\rindex{r}{T} = \wmap(r)$ for every tree $T$ and every vertex $r$ of $T$.
 \end{rem}
+
+
 
 \begin{rem}\label{rem:rooted-examples}
 If $\lambda = 0$ then $\rindex{r}{T}$ is the sum over each subtree $S$ of $T$ containing the vertex $r$ of the value
 \begin{eqnarray*}
 	\mu^{\size{\vsetof{S}}-1} \underset{v \in \vsetof{S}}{\prod} \wmap(v).
 \end{eqnarray*}
-If $\mu = 0$ then $\rindex{r}{T}$ is the sum over each vertex $u$ of $T$ of the value
+If $\mu = 0$ then
 \begin{eqnarray*}
-	\lambda^{\distance{u}{r}{T}} \wmap(u).
+	\rindex{r}{T} = \sum_{u\in \vsetof{T}} \lambda^{\distance{u}{r}{T}} \wmap(u).
 \end{eqnarray*}
 \end{rem}
 
-We extend our definition (Equation~\eqref{eq:rindex-tree-decomp}) to rooted forests by setting for every such non-empty forest $F$ with roots $R$ the value
+We extend our definition (Equation~\eqref{eq:rindex-tree-decomp}) to rooted forests. For every forest $F$ with roots $R$, each $r\in R$ contained in a different connected component $T_r$ of $F$, we set
 \begin{eqnarray*}
-	\rindex{R}{F} & = & \underset{S \subseteq R \; S \neq \emptyset}{\sum} \mu^{\size{S} - 1} \underset{r \in S}{\prod} \rindex{r}{T_r}
+	\rindex{R}{F} & = & \sum_{\substack{S \subseteq R\\S \neq \emptyset}} \mu^{\size{S} - 1} \underset{r \in S}{\prod} \rindex{r}{T_r}.
 \end{eqnarray*}
-where for each $r \in R$ the tree $T_r$ denotes the connected component of $F$ containing $r$. We observe that this definition is consistent when $F$ is a tree and $R$ consists of a single vertex. We define $\rindexsymbol$ to be equal to $0$ on the empty rooted forest. We observe also that if $F$ is obtained from the disjoint union of $F_1$ and $F_2$ with respective roots $R_1$ and $R_2$ so that $R$ is the disjoint union of $R_1$ and $R_2$ then
+
+\bldcomment{
+\[ 1 + \mu \rindex{R}{F} =  \prod_{r\in R} (1 + \mu \rindex{r}{T_r})\]
+}
+Observe that this definition is consistent when $F$ is a tree and $R$ consists of a single vertex. %We define $\rindexsymbol$ to be equal to $0$ on the empty rooted forest. 
+We observe also that if $F$ is obtained from the disjoint union of $F_1$ and $F_2$ with respective roots $R_1$ and $R_2$ so that $R$ is the disjoint union of $R_1$ and $R_2$ then
 \begin{eqnarray}
 	\rindex{R}{F} & = & \rindex{R_1}{F_1} + \rindex{R_2}{F_2} + \mu \rindex{R_1}{F_1} \rindex{R_2}{F_2}. \label{eq:rindex-forest-decomp}
 \end{eqnarray}
 We also obtain a recursion summarized by Lemma~\ref{lem:local-index-recursion}.
 
 \begin{lem}\label{lem:local-index-recursion}
-	Consider a rooted tree $\rtree{T}{r}$ and let $S$ denote the (possibly empty) set of the children of $r$ in $\rtree{T}{r}$. Then
+	Consider a rooted tree $\rtree{T}{r}$. Let $F$ denote the forest obtained from $T$ by removing $r$ and let $S$ denote the set of the children of $r$ in $\rtree{T}{r}$. Then
 \begin{eqnarray*}
-	\rindex{r}{T} = \bilinear(\wmap(r), \rindex{S}{F})
+	\rindex{r}{T} = \wmap(r) \star \rindex{S}{F}.
 \end{eqnarray*}
-where $F$ denotes the (possibly empty) forest obtained from $T$ by removing $r$.
 \end{lem}
-
-\begin{proof}
-We prove the result recursively on the size of $S$. The result is clear if $S$ is empty so we assume $S \neq \emptyset$. We consider some element $u$ of $S$ and remove the edge $ur$ to disconnect $T$ into two connected components. We name $T_1$ the component containing $r$ and $T_2$ the component containing $u$. Equation~\eqref{eq:rindex-tree-decomp} gives
-\begin{eqnarray}
-	\rindex{r}{T} = \bilinear(\rindex{r}{T_1}, \rindex{u}{T_2}) = \rindex{r}{T_1} + \lambda \rindex{u}{T_2} + \mu \rindex{r}{T_1} \rindex{u}{T_2}. \label{eq:local-index-recursion-1}
-\end{eqnarray}
-%First assume that $S$ contains no other vertex than $u$. Then $T_2 = F$ and thus Equation~\eqref{eq:rindex-forest-def} gives $\rindex{u}{T_2} = \rindex{S}{F}$. Also $r$ is the only vertex of $T_1$ so $\rindex{r}{T_1} = \wmap(r)$ holds by definition of $\rindexsymbol$ and we are done. So now assume that $S$ contains at least two vertices. 
-Applying the recursion hypothesis to $T_1$ gives
-\begin{eqnarray}
-	\rindex{r}{T_1} & = & \wmap(r) + \lambda \rindex{S'}{F'} + \mu \wmap(r) \rindex{S'}{F'} \label{eq:local-index-recursion-2}
-\end{eqnarray}
-where $S' = S \setminus \{u\}$ and $F'$ is obtained from $F$ by removing $T_2$.	Combining Equation~\eqref{eq:local-index-recursion-1} and Equation~\eqref{eq:local-index-recursion-2} gives
-\begin{eqnarray*}
-	\rindex{r}{T} & = & \wmap(r) + \lambda X + \mu \wmap(r) X
-\end{eqnarray*}
-where $X = \rindex{S'}{F'} + \rindex{u}{T_2} + \mu \rindex{S'}{F'} \rindex{u}{T_2}$. We get $X = \rindex{R}{F}$ from Equation~\eqref{eq:rindex-forest-decomp}.
-\end{proof}
+\bldcomment{Easy consequence of the properties of $\star$ (but those are proved similarly).}
+%\begin{proof}
+%We prove the result recursively on the size of $S$. The result is clear if $S$ is empty. If $S \neq \emptyset$, consider some element $u$ of $S$. Removing the edge $ur$ disconnects $T$ into two connected components, $T_r$ containing $r$ and $T_u$ containing $u$. Equation~\eqref{eq:rindex-tree-decomp} gives
+%\begin{eqnarray}
+%	\rindex{r}{T} = \rindex{r}{T_r} \star \rindex{u}{T_u} = \rindex{r}{T_r} + \lambda \rindex{u}{T_u} + \mu \rindex{r}{T_r} \rindex{u}{T_u}. \label{eq:local-index-recursion-1}
+%\end{eqnarray}
+%First assume that $S$ contains no other vertex than $u$. Then $T_u = F$ and thus Equation~\eqref{eq:rindex-forest-def} gives $\rindex{u}{T_u} = \rindex{S}{F}$. Also $r$ is the only vertex of $T_1$ so $\rindex{r}{T_1} = \wmap(r)$ holds by definition of $\rindexsymbol$ and we are done. So now assume that $S$ contains at least two vertices. 
+%Applying the recursion hypothesis to $T_r$ gives
+%\begin{eqnarray}
+%	\rindex{r}{T_r} & = & \wmap(r) + \lambda \rindex{S'}{F'} + \mu \wmap(r) \rindex{S'}{F'} \label{eq:local-index-recursion-2}
+%\end{eqnarray}
+%where $S' = S \setminus \{u\}$ and $F'$ is obtained from $F$ by removing $T_u$.	Combining Equation~\eqref{eq:local-index-recursion-1} and Equation~\eqref{eq:local-index-recursion-2} gives
+%\begin{eqnarray*}
+%	\rindex{r}{T} & = & \wmap(r) + \lambda X + \mu \wmap(r) X = \wmap(r) \star X
+%\end{eqnarray*}
+%where $X = \rindex{S'}{F'} + \rindex{u}{T_u} + \mu \rindex{S'}{F'} \rindex{u}{T_u}$. We get $X = \rindex{S}{F}$ from Equation~\eqref{eq:rindex-forest-decomp}.
+%\end{proof}
 
 \begin{cor}\label{cor:local-index-recursion}
-	Consider a rooted tree $\rtree{T}{r}$ and a (possibly empty) subset $S$ of the children of $r$ in $\rtree{T}{r}$. We are interested in the forest $F$ obtained from $T$ by removing the edge $rs$ for every $s \in S$. Then
+	Consider a rooted tree $\rtree{T}{r}$ and a (possibly empty) subset $S$ of the children of $r$ in $\rtree{T}{r}$. Removing the edge $rs$ for every $s \in S$ splits $T$ into a tree $T_1$ containing $r$ and a (possibly empty) forest $F_1$ containing the other components. Then
 \begin{eqnarray*}
-	\rindex{r}{T} = \bilinear(\rindex{r}{T_1}, \rindex{S}{F_1})
+	\rindex{r}{T} = \rindex{r}{T_1} \star \rindex{S}{F_1}.
 \end{eqnarray*}
-where $T_1$ denotes the connected component of $F$ containing $r$ and $F_1$ denotes the (possibly empty) union of the other connected components of $F$.
 \end{cor}
 
 \begin{proof}
@@ -379,7 +406,7 @@ That follows recursively from Lemma~\ref{lem:local-index-recursion}, Equation~\e
 
 \subsubsection{Decomposing the rooted Tree-Path index}
 
-We start this section with a definition that will be used in Lemma~\ref{lem:rindex-cut}. Assume that a tree $T$ has two possibly equal vertices $u$ and $v$. We denote by $x_1, \dots, x_n$ for some $n \geq 1$ the vertices of the path between $u$ and $v$ in $T$ so that $x_1 = u$, $x_n = v$ and for every $i \in [n-1]$ the edge $x_i x_{i+1}$ belongs to $T$. Given $k \in [n]$ we denote by $T_k$ the subtree of $T$ induced by the vertices that are at smaller distance of $x_k$ than of $x_i$ for every $i \in [n] \setminus \{k\}$. The tree $T$ is obtained from the disjoint union of the trees $T_1, \dots, T_n$ by adding the edges $\{x_i x_{i+1} \;:\; i \in [n-1]\}$. We define
+We start this section with a definition that will be used in Lemma~\ref{lem:rindex-cut}. Assume that a tree $T$ has two possibly equal vertices $u$ and $v$. We denote by $x_1, \dots, x_n$ for some $n \geq 1$ the vertices of the path between $u$ and $v$ in $T$ (so $x_1 = u$ and $x_n = v$). Given $k \in [n]$ we denote by $T_k$ the subtree of $T$ induced by the vertices that are at smaller distance of $x_k$ than of $x_i$ for every $i \in [n] \setminus \{k\}$. The tree $T$ is obtained from the disjoint union of the trees $T_1, \dots, T_n$ by adding the edges $\{x_i x_{i+1} \;:\; i \in [n-1]\}$. We define
 \begin{eqnarray}
 	\aindex{u}{v}{T} = \underset{k=1}{\overset{n}{\prod}} (\lambda + \mu \rindex{x_k}{T_k}). \label{eq:aindex}
 \end{eqnarray}
@@ -388,7 +415,7 @@ and observe that $\aindex{u}{v}{T} = \aindex{v}{u}{T}$.
 \begin{lem}\label{lem:rindex-cut}
 	Consider a tree $T_1$ with two possibly equal vertices $u$ and $v$ and a (possibly empty) forest $F$ with roots $R$. Assume that $T_1$ and $F$ are disjoint and consider the tree $T$ obtained from the disjoint union of $T_1$ and $F$ by adding the edge $vr$ for every $r \in R$. Then
 \begin{eqnarray*}
-	\rindex{u}{T} = \rindex{u}{T_1} + \aindex{u}{v}{T_1} \rindex{R}{F}.
+	\rindex{u}{T} = \rindex{u}{T_1} + \aindex{u}{v}{T_1} \cdot \rindex{R}{F}.
 \end{eqnarray*}
 \end{lem}
 
@@ -447,20 +474,20 @@ If $\lambda = 0$ then $\tindex{T}$ is the sum over each non-empty subtree $S$ of
 \begin{eqnarray*}
 	\mu^{\size{S}-1} \underset{v \in \vsetof{S}}{\prod} \wmap(v).
 \end{eqnarray*}
-If $\mu = 0$ then $\tindex{T}$ is the sum of the weights of the vertices of $T$ plus the sum over each unordered pair of distinct vertices $u$ and $v$ of $T$ of the value
+If $\mu = 0$ then 
 \begin{eqnarray*}
-	\lambda^{\distance{u}{v}{T}} \wmap(u) \wmap(v).
+	\tindex{T} = {\sum_{v\in\vsetof{T}} \wmap(v) } \quad + \sum_{(u,v)\in\vsetof{T}^2} \lambda^{\distance{u}{v}{T}} \wmap(u) \wmap(v).
 \end{eqnarray*}
 \end{rem}
 
 Remark~\ref{rem:degenerate} is recursively inferred by Equations~\eqref{eq:rindex-tree-decomp}~and~\eqref{eq:global-index-definition}.
 
 \begin{rem}\label{rem:degenerate}
-If $\lambda = 1$ then for every tree $T$ and every vertex $r$ of $T$ we have equality between $\rindex{r}{T}$ and $\tindex{T}$ and both terms are equal to the sum of the value
+If $\lambda = 1$ then for every tree $T$ and every vertex $r$ of $T$ we have
 \begin{eqnarray*}
-	\mu^{\size{S}-1} \underset{v \in S}{\prod} \wmap(v)
+	\rindex{r}{T} = \tindex{T} = \sum_{\substack{S \subset \vsetof{T}\\S\neq \emptyset}} \mu^{\size{S}-1} \underset{v \in S}{\prod} \wmap(v).
 \end{eqnarray*}
-over every non-empty subset $S$ of the vertices of $T$. Observe that this quantity only depends on the set of vertices of $T$.
+Observe that this quantity depends only on the set of vertices of $T$.
 \end{rem}
 
 \subsubsection{The Tree-Path index and the weights of two vertices}
@@ -468,20 +495,20 @@ over every non-empty subset $S$ of the vertices of $T$. Observe that this quanti
 \ldcomment{Can we simplify things in this section? Maybe we could merge Lemmas~\ref{lem:tindex-decomp-3}~and~\ref{lem:tindex-decomp-2}}
 
 \begin{lem}\label{lem:tindex-decomp-1}
-Consider some $n \geq 0$, some (possibly none if $n=0$) rooted trees $\rtree{T_1}{r_1}, \dots, \rtree{T_n}{r_n}$ and some vertex $u$. Assume that $u, T_1, \dots, T_n$ are pairwise-disjoint and let $T$ be the tree obtained from the disjoint union of $u, T_1, \dots, T_n$ by adding the edge $u r_k$ for every $k \in [n]$. Then
+Let $T$ be a tree with a vertex $u$. Removing $u$ disconnects $T$ into $n$ components $T_1,\dots, T_n$ for some $n\in \cN$. For each $k\in[n]$, let $r_k$ be the neighbour of $u$ contained in $T_k$, $F_k$ be the disjoint union of $T_1, \dots, T_k$ and $R_k = \{r_1, \dots, r_k\}$. Then
 \begin{eqnarray*}
 	\tindex{T} & = & \wmap(u) + \left(\underset{k=1}{\overset{n}{\sum}} \tindex{T_k}\right) + (\lambda + \mu)\wmap(u)\left(\underset{k=1}{\overset{n}{\sum}}\rindex{r_k}{T_k}\right) \\
 	& + & (\lambda + \mu)(\lambda + \mu \wmap(u))\left(\underset{k=1}{\overset{n-1}{\sum}}\rindex{R_k}{F_k}\rindex{r_{k+1}}{T_{k+1}}\right).
 \end{eqnarray*}
-where $F_k$ denotes the disjoint union of $T_1, \dots, T_k$ and $R_k = \{r_1, \dots, r_k\}$ for every $k \in [n]$.
 \end{lem}
 
 \begin{proof}
-We prove the result recursively on $n$. If $n = 0$ then the result is clear. If $n = 1$ then Equation~\eqref{eq:global-index-definition} (applied to the edge $u r_1$) gives
-\begin{eqnarray*}
-	\tindex{T} = \wmap(u) + \tindex{T_1} + (\lambda + \mu)\wmap(u) \rindex{r_1}{T_1}
-\end{eqnarray*}
-and we are done. So assume $n \geq 1$. Let $T'$ be the tree obtained from the disjoint union of $u$ and $F_{n-1}$ by adding the edge $u r_k$ for every $k \in [n-1]$. Applying Equation~\eqref{eq:global-index-definition} (to the edge $u r_n$) gives
+We prove the result recursively on $n$. If $n = 0$ then the result is clear. %If $n = 1$ then Equation~\eqref{eq:global-index-definition} (applied to the edge $u r_1$) gives
+%\begin{eqnarray*}
+%	\tindex{T} = \wmap(u) + \tindex{T_1} + (\lambda + \mu)\wmap(u) \rindex{r_1}{T_1}
+%\end{eqnarray*}
+%and we are done. 
+So assume $n \geq 1$. Let $T'$ be the tree obtained from the disjoint union of $u$ and $F_{n-1}$ by adding the edge $u r_k$ for every $k \in [n-1]$. Applying Equation~\eqref{eq:global-index-definition} (to the edge $u r_n$) gives
 \begin{eqnarray*}
 	\tindex{T} & = & \tindex{T'} + \tindex{T_n} + (\lambda + \mu) \rindex{u}{T'} \rindex{r_n}{T_n}.
 \end{eqnarray*}
@@ -568,42 +595,40 @@ and we conclude by observing that Equation~\eqref{eq:rindex-forest-decomp} gives
 \begin{defi}
 We say that $\rindexsymbol$ is convex if for every tree $T$ and for every three consecutive (inducing a path in this order) vertices $a,b$ and $c$ of $T$ one has
 \begin{eqnarray*}
-	2 \rindex{b}{T} < \rindex{a}{T} + \rindex{c}{T}.
+	2 \cdot \rindex{b}{T} < \rindex{a}{T} + \rindex{c}{T}.
 \end{eqnarray*}
-We say that $\rindexsymbol$ is concave if the inequality is the other way around. We say that $\rindexsymbol$ is degenerate if $\rindex{u}{T} = \rindex{v}{T}$ for every two vertices of every tree $T$. 
+We say that $\rindexsymbol$ is concave if ${-\rindexsymbol}$ is convex. We say that $\rindexsymbol$ is degenerate if $\rindex{u}{T} = \rindex{v}{T}$ for every two vertices of every tree $T$. 
 \end{defi}
 
 \begin{prop}\label{prop:convexity}
-Assume $\lambda + \mu \wmin \geq 1$. Depending on whether $\lambda < 1$, $\lambda = 1$ or $\lambda > 1$ the map $\rindexsymbol$ is either concave, degenerate or convex respectively.
+If $\lambda + \mu \wmin \geq 1$ then, depending on whether $\lambda < 1$, $\lambda = 1$ or $\lambda > 1$ the map $\rindexsymbol$ is respectively concave, degenerate or convex. If $0 < \lambda + \mu \wmin < 1$ then $\rindexsymbol$ is neither convex, nor concave, nor degenerate.
 \end{prop}
 
 \begin{proof}
-If $\lambda = 1$ we get that $\rindexsymbol$ is degenerate from Remark~\ref{rem:degenerate} (we also obtain it from Equation~\eqref{eq:rindex-tree-decomp} and from the observation that in this particular case $\bilinear(x,y) = \bilinear(y,x)$ for every $(x,y) \in \cR^2$). So assume $\lambda \neq 1$. Consider a tree $T$ with three consecutive vertices $a,b$ and $c$. Let $A$ be the subtree of $T$ induced by the vertices that are at smaller distance of $a$ than of $b$ and $c$. Let $B$ and $C$ be defined similarly for $b$ and $c$ respectively: the tree $T$ is obtained from the disjoint union of $A,B$ and $C$ by adding the edges $ab$ and $bc$. Let $x,y$ and $z$ denote respectively $\rindex{a}{A}, \rindex{b}{B}$ and $\rindex{c}{C}$. Applying Equation~\eqref{eq:rindex-tree-decomp} gives each of the following:
+If $\lambda = 1$ we get that $\rindexsymbol$ is degenerate from Remark~\ref{rem:degenerate} (we also obtain it from Equation~\eqref{eq:rindex-tree-decomp} and from the observation that in this particular case $\star$ commutes). So assume $\lambda \neq 1$. Consider a tree $T$ with three consecutive vertices $a,b$ and $c$. Removing the edges $ab$ and $bc$ splits $T$ into three components $A$, $B$ and $C$ containing $a$, $b$ and $c$ respectively. Let $x,y$ and $z$ denote respectively $\rindex{a}{A}, \rindex{b}{B}$ and $\rindex{c}{C}$. Applying Equation~\eqref{eq:rindex-tree-decomp} gives each of the following:
 \begin{eqnarray*}
-	\rindex{a}{T} & = & \bilinear(x,\bilinear(y,z)) \\
-	\rindex{c}{T} & = & \bilinear(z,\bilinear(y,x)) \\
-	\rindex{b}{T} & = & \bilinear(\bilinear(y,x),z).
+	\rindex{a}{T} & = & x \star (y \star z) \\
+	\rindex{c}{T} & = & z \star (y \star x) \\
+	\rindex{b}{T} & = & (y \star x) \star z.
 \end{eqnarray*}
-Or equivalently
-\begin{eqnarray*}
-	\rindex{a}{T} & = & x + \lambda y + \lambda^2 z + \mu xy + \lambda \mu xz + \lambda \mu yz + \mu^2 xyz \\
-	\rindex{c}{T} & = & \lambda^2 x + \lambda y + z + \lambda \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz \\
-	\rindex{b}{T} & = & \lambda x + y + \lambda z + \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz.
-\end{eqnarray*}
+%Or equivalently
+%\begin{eqnarray*}
+%	\rindex{a}{T} & = & x + \lambda y + \lambda^2 z + \mu xy + \lambda \mu xz + \lambda \mu yz + \mu^2 xyz \\
+%	\rindex{c}{T} & = & \lambda^2 x + \lambda y + z + \lambda \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz \\
+%	\rindex{b}{T} & = & \lambda x + y + \lambda z + \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz.
+%\end{eqnarray*}
 From that we deduce
 \begin{eqnarray}
-	\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T} & = & (\lambda-1)^2 (x + z) + 2 (\lambda - 1) y + (\lambda-1) \mu y (x+z) \nonumber \\
-	& = & [\lambda - 1][(\lambda + \mu y - 1)(x+z) + 2y]. \label{eq:convexity}
+	\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T} & = & x \star (y \star z) - y \star z \star x +  z \star (y \star x) - y\star x \star z \notag \\  
+	& = & (x - (y\star z))(1 - \lambda) + (z - (y \star x))(1 - \lambda) \notag \\
+	& = & (x + z - y - y \star (x + z)) (1 - \lambda) \notag\\
+	& = & [(x + z)(1 - \lambda - \mu y) - 2y] (1 - \lambda). \label{eq:convexity}
+%	\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T} & = & (\lambda-1)^2 (x + z) + 2 (\lambda - 1) y + (\lambda-1) \mu y (x+z) \nonumber \\
+%	& = & [\lambda - 1][(\lambda + \mu y - 1)(x+z) + 2y]. \label{eq:convexity}
 \end{eqnarray}
-We have $\lambda + \mu \wmin \geq 1$ by assumption and $x,y,z \geq \wmin > 0$ by Remark~\ref{rem:rindex-minimum-value}. Consequently the sign of $\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T}$ is the sign of $\lambda - 1$.
-\end{proof}
+Since $x,y,z \geq \wmin > 0$ by Remark~\ref{rem:rindex-minimum-value}, when $\lambda + \mu \wmin \geq 1$ the sign of $\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T}$ is the sign of $\lambda - 1$.
 
-\begin{prop}
-Assume $0 < \lambda + \mu \wmin < 1$. Then $\rindexsymbol$ is not convex, not concave and not degenerate.
-\end{prop}
-
-\begin{proof}
-With our assumptions we obtain that in Equation~\eqref{eq:convexity} if $y = \wmin$ and $x$ is large enough then $(\lambda + \mu y - 1)(x+z) + 2y < 0$. And if $y$ is large enough then $(\lambda + \mu y - 1)(x+z) + 2y > 0$. Both cases exist by Remark~\ref{rem:rindex-minimum-value}. Also $\lambda < 1$ holds by assumption.
+On the other hand, if $0 < \lambda + \mu \wmin < 1$ we obtain that in Equation~\eqref{eq:convexity} if $y = \wmin$ and $x$ is large enough then $(\lambda + \mu y - 1)(x+z) + 2y < 0$. And if $y$ is large enough then $(\lambda + \mu y - 1)(x+z) + 2y > 0$. Both cases exist by Remark~\ref{rem:rindex-minimum-value}. Also $\lambda < 1$ holds by assumption.
 \end{proof}
 
 \subsection{Packness and the rooted Tree-Path index}
@@ -626,7 +651,7 @@ With our assumptions we obtain that in Equation~\eqref{eq:convexity} if $y = \wm
 This section is dedicated to the proof of Theorem~\ref{thm:compacity}.
 
 \begin{thm}\label{thm:compacity}
- Assume $\lambda + \mu \wmin \geq 1$ and $\lambda \neq 1$. If $\lambda < 1$ then $\indexsymbol$ is packed. If $\lambda > 1$ then $-\indexsymbol$ (denoting the opposite of $\indexsymbol$) is packed.
+ Assume $\lambda + \mu \wmin \geq 1$ and $\lambda \neq 1$. If $\lambda < 1$ then $\indexsymbol$ is packed. If $\lambda > 1$ then ${-\indexsymbol}$ is packed.
 \end{thm}
 
 % \ldtodo{discuss counter-examples when $\lambda + \mu \wmin < 1$.}
@@ -740,36 +765,40 @@ Let us first assume that $u$ and $v$ are adjacent in $T$ and prove the result in
 \begin{eqnarray}
 	\tindex{T} - \tindex{T'} & = & (\lambda + \mu)(\wmap(u) - \wmap(v))(1 - \lambda)(\rindex{R}{F} - \rindex{R'}{F'}). \label{eq:compacity-map-proof-eq1}
 \end{eqnarray}
+\bldcomment{Broken reference}
 Also Equation~\eqref{eq:local-index-recursion-2} gives
 \begin{eqnarray*}
-	\rindex{u}{T} & = & \bilinear(\bilinear(\wmap(u),\rindex{R}{F}), \bilinear(\wmap(v),\rindex{R'}{F'})) \\
-	\rindex{v}{T} & = & \bilinear(\bilinear(\wmap(v),\rindex{R'}{F'}), \bilinear(\wmap(u),\rindex{R}{F})).
+	\rindex{u}{T} & = & \wmap(u) \star \rindex{R}{F} \star (\wmap(v) \star \rindex{R'}{F'}) \\
+	\rindex{v}{T} & = & \wmap(v) \star \rindex{R'}{F'} \star (\wmap(u)\star \rindex{R}{F}).
 \end{eqnarray*}
-Observing that $\bilinear(x, y) - \bilinear(y, x) = (1 - \lambda)(x-y)$ for every $(x, y) \in \cR^2$ we get
+Observing that $ x \star y - y \star x = (1 - \lambda)(x-y)$ for every $(x, y) \in \cR^2$ we get
 \begin{eqnarray}
 	0 & \geq & \rindex{u}{T} - \rindex{v}{T} \nonumber \\
-	& = & (1 - \lambda) \left(\bilinear(\wmap(u),\rindex{R}{F}) - \bilinear(\wmap(v),\rindex{R'}{F'})\right). \label{eq:compacity-map-proof-eq2}
+	& = & (1 - \lambda) \left(\wmap(u) \star \rindex{R}{F} - \wmap(v) \star \rindex{R'}{F'}\right). \label{eq:compacity-map-proof-eq2}
 \end{eqnarray}
-There are two cases. First consider $\lambda < 1$ and $\wmap(u) > \wmap(v)$. If $\rindex{R}{F} \geq \rindex{R'}{F'}$ then $\bilinear(\wmap(u),\rindex{R}{F}) > \bilinear(\wmap(v),\rindex{R'}{F'})$ contradicting Equation~\eqref{eq:compacity-map-proof-eq2}. So $\rindex{R}{F} < \rindex{R'}{F'}$ and Equation~\eqref{eq:compacity-map-proof-eq1} gives $\tindex{T} < \tindex{T'}$. Now consider $\lambda > 1$ and $\wmap(u) < \wmap(v)$. If $\rindex{R}{F} \leq \rindex{R'}{F'}$ then $\bilinear(\wmap(u),\rindex{R}{F}) < \bilinear(\wmap(v),\rindex{R'}{F'})$ contradicting Equation~\eqref{eq:compacity-map-proof-eq2}. So $\rindex{R}{F} > \rindex{R'}{F'}$ and Equation~\eqref{eq:compacity-map-proof-eq1} gives $\tindex{T} > \tindex{T'}$.
+%\bldcomment{Below, case of equality to zero unaddressed.}
+There are two cases. First consider $\lambda < 1$ and $\wmap(u) > \wmap(v)$.  Since both $\rindexsymbol$ and $\wmap$ are positive, %$\rindex{R}{F} \geq \rindex{R'}{F'}$ then $\wmap(u) \star \rindex{R}{F} > \wmap(v) \star \rindex{R'}{F'}$ contradicting \
+Equation~\eqref{eq:compacity-map-proof-eq2} forces $\rindex{R}{F} < \rindex{R'}{F'}$ and Equation~\eqref{eq:compacity-map-proof-eq1} gives $\tindex{T} < \tindex{T'}$. Now consider $\lambda > 1$ and $\wmap(u) < \wmap(v)$. Equation~\eqref{eq:compacity-map-proof-eq2} forces $\rindex{R}{F} > \rindex{R'}{F'}$ and Equation~\eqref{eq:compacity-map-proof-eq1} gives $\tindex{T} > \tindex{T'}$.
 
 
-Now we assume that $u$ and $v$ are not adjacent in $T$ and prove the result in this case. Let $x$ be the neighbor of $u$ that lie on the path between $u$ and $v$ in $T$ and let $x'$ be the corresponding neighbor of $v$ ($x$ and $x'$ may be equal). Let $R_+$ denote the neighbors of $u$ and $R'_+$ the neighbors of $v$. Let also $R = R_+ \setminus \{x\}$ and $R'= R'_+ \setminus \{x'\}$. Removing the edges between $u$ and $R_+$ and between $v$ and $R'_+$ disconnects $T$. Let $X$ be the component containing $x$ and $x'$. Let $F$ be the union of the components containing an element of $R$. Let $F', F_+$ and $F'_+$ be defined similarly for $R', R_+$ and $R'_+$. We also introduce the notations $h = \aindex{x}{x'}{X}$, $j = \rindex{R}{F}$, $j_+ = \rindex{R_+}{F_+}$, $j' = \rindex{R'}{F'}$ and $j'_+ = \rindex{R'_+}{F'_+}$. Lemma~\ref{lem:tindex-decomp-2} gives
+Now we assume that $u$ and $v$ are not adjacent in $T$ and prove the result in this case. Let $x$ be the neighbor of $u$ lying on the path between $u$ and $v$ in $T$ and let $x'$ be the corresponding neighbor of $v$ ($x$ and $x'$ may be equal). Let $R_+$ denote the neighbors of $u$ and $R'_+$ the neighbors of $v$. Let also $R = R_+ \setminus \{x\}$ and $R'= R'_+ \setminus \{x'\}$. Removing the edges between $u$ and $R_+$ and between $v$ and $R'_+$ disconnects $T$. Let $X$ be the component containing $x$ and $x'$. Let $F$ be the union of the components containing an element of $R$. Let $F', F_+$ and $F'_+$ be defined similarly for $R', R_+$ and $R'_+$. We also introduce the notations $h = \aindex{x}{x'}{X}$, $j = \rindex{R}{F}$, $j_+ = \rindex{R_+}{F_+}$, $j' = \rindex{R'}{F'}$ and $j'_+ = \rindex{R'_+}{F'_+}$. Lemma~\ref{lem:tindex-decomp-2} gives
 \begin{eqnarray}
 	\tindex{T} - \tindex{T'} & = & (\lambda + \mu)(\wmap(u) - \wmap(v))(\alpha - \beta) \label{eq:compacity-map-proof-eq3}
 \end{eqnarray}
 where $\alpha = j_+ - \lambda h j$ and $\beta = j'_+ - \lambda h j'$. Equation~\eqref{eq:local-index-recursion-2} and Lemma~\ref{lem:rindex-cut} give
 \begin{eqnarray*}
-	\rindex{u}{T} & = & \bilinear(\bilinear(\wmap(u),j), \rindex{x}{X} + h \bilinear(\wmap(v),j')).
+	\rindex{u}{T} & = & \wmap(u)\star j \star (\rindex{x}{X} + h (\wmap(v) \star j')).
 \end{eqnarray*}
-Observing that $\bilinear(x, y + tz) = \bilinear(x,y) + t \bilinear(x,z) - tx$ for every $(x,y,z,t) \in \cR^4$ we get
+Observing that $x \star (y + tz) = x \star y + t (x \star z) - tx$ for every $(x,y,z,t) \in \cR^4$ we get
 \begin{eqnarray*}
-	\rindex{u}{T} & = & \bilinear\left(\bilinear(\wmap(u),j), \rindex{x}{X}\right) + h \bilinear\left(\bilinear(\wmap(u),j), \bilinear(\wmap(v),j')\right) - h \bilinear(\wmap(u),j) \\
-	& = & \bilinear(\wmap(u), j_+) + h \bilinear\left(\bilinear(\wmap(u),j), \bilinear(\wmap(v),j')\right) - h \bilinear(\wmap(u),j).
+	\rindex{u}{T} & = & \wmap(u)\star j \star \rindex{x}{X} + h (\wmap(u)\star j \star (\wmap(v) \star j')) - h (\wmap(u) \star j) \\
+	& = & \wmap(u) \star j_+ + h (\wmap(u)\star j \star (\wmap(v) \star j')) - h (\wmap(u) \star j).
 \end{eqnarray*}
-Similarly $\rindex{v}{T} = \bilinear(\wmap(v), j'_+) + h \bilinear\left(\bilinear(\wmap(v),j'), \bilinear(\wmap(u),j)\right) - h \bilinear(\wmap(v),j')$. Now observing that $\bilinear(x, y) - \bilinear(y, x) = (1 - \lambda)(x-y)$ for every $(x, y) \in \cR^2$ we get
+Similarly $\rindex{v}{T} = \wmap(v) \star  j'_+ + h \left((\wmap(v) \star j')\star (\wmap(u) \star j)\right) - h (\wmap(v) \star j')$. Now %observing that $\ourproduct(x, y) - \ourproduct(y, x) = (1 - \lambda)(x-y)$ for every $(x, y) \in \cR^2$ 
+we get
 \begin{eqnarray}
 	0 & \geq & \rindex{u}{T} - \rindex{v}{T} \nonumber \\
-	& = & \bilinear(\wmap(u), j_+) - \bilinear(\wmap(v), j'_+) - \lambda h[\bilinear(\wmap(u),j) - \bilinear(\wmap(v),j')] \nonumber \\
+	& = & \wmap(u) \star  j_+ - \wmap(v) \star j'_+ - \lambda h (\wmap(u) \star j - \wmap(v) \star j') \nonumber \\
 	& = & (\wmap(u) - \wmap(v))(1 - \lambda h) + \lambda(\alpha - \beta) + \mu (\wmap(u)\alpha - \wmap(v) \beta) \nonumber \\
 	& = & (\wmap(u) - \wmap(v))(1 - \lambda h + \mu \alpha)  + (\lambda + \mu \wmap(v))(\alpha - \beta). \label{eq:compacity-map-proof-eq4}
 \end{eqnarray}
@@ -790,9 +819,11 @@ So let us assume that our claim does not hold and obtain a contradiction. There 
 
 \section{Links to the bibliography and open questions}\label{section:links}
 
-\subsection{Number of subtrees and Wiener index}
+We observe that common (rooted) indices are either cases of our (rooted) Tree-Path index with a judicious choice of parameters, or limits thereof.
 
-The rooted index mapping every rooted tree $\rtree{T}{r}$ to the number subtrees of $T$ containing the root $r$ is a rooted Tree-Path index (for $\lambda = 0$, $\mu = 1$ and $\wmap(\vset) = \{1\}$). Given $\varepsilon > 0$ we denote by $\widetilde{\chi}_{\varepsilon}$ the rooted Tree-Path index given by $\lambda = 1 + \varepsilon$, $\mu = 0$ and $\wmap(\vset) = \{1\}$. The rooted index mapping every rooted tree $\rtree{T}{r}$ with $n \geq 1$ vertices to the sum over each vertex $v$ of $T$ of the distance $\distance{v}{r}{T}$ is the limit on every such $\rtree{T}{r}$ of the rooted indices
+\subsection{Rooted indices}
+
+The rooted index mapping every rooted tree $\rtree{T}{r}$ to the number of subtrees of $T$ containing the root $r$ is a rooted Tree-Path index (for $\lambda = 0$, $\mu = 1$ and $\wmap(\vset) = \{1\}$). Given $\varepsilon > 0$ we denote by $\widetilde{\chi}_{\varepsilon}$ the rooted Tree-Path index given by $\lambda = 1 + \varepsilon$, $\mu = 0$ and $\wmap(\vset) = \{1\}$. The rooted index mapping every rooted tree $\rtree{T}{r}$ with $n \geq 1$ vertices to the sum over each vertex $v$ of $T$ of the distance $\distance{v}{r}{T}$ is the limit on every such $\rtree{T}{r}$ of the rooted indices
 \begin{eqnarray*}
 	\frac{1}{\varepsilon}(\widetilde{\chi}_{\varepsilon} - n)
 \end{eqnarray*}
@@ -802,18 +833,31 @@ as $\varepsilon \rightarrow 0$.
 The number of subtrees containing the root and the number of subtrees containing a given vertex are not the same thing. The first one is a rooted index. The second one is an index.
 \end{rem}
 
-We discussed two rooted indices. We will now discuss some indices. Consider some finite $S \subset \vset$ and some $r \in \vset$. We are interested in the following indices. The index $\mathbb{F}^S$ maps every tree $T$ to the number of subtrees $T' \subseteq T$ such that $S \subseteq V(T')$. We write $\mathbb{F} = \mathbb{F}^{\emptyset}$ to denote the index counting the total number of subtrees. The index $\mathbb{W}$, known as the Wiener index, maps every tree $T$ to the sum over each unordered pair $\{u,v\} \subseteq V(T)$, $u \neq v$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$. The index $\mathbb{W}^{\{r\}}$ maps $T$ to $0$ if $r \notin V(T)$. Otherwise $\mathbb{W}^{\{r\}}(T)$ is the sum over every $v \in V(T)$ of the distance $\distance{v}{r}{T}$ between $v$ and $r$ in $T$. If $\size{S} \geq 2$ then the index $\mathbb{W}^S$ maps $T$ to the sum over each unordered pair $\{u, v\} \subseteq V(T) \cap S$, $u \neq v$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$.
+\subsection{Indices}
 
-Given $X \subseteq \vset$, $\rho \geq 1$ and $\lambda, \mu \geq 0$ we define $\chi^{\lambda, \mu}_{X, \rho}$ as the Tree-Path index corresponding to $\lambda, \mu$ where for every $v \in \vset$ the value $\wmap(v)$ is either $\rho$ if $v \in X$ or $1$ if $v \notin X$. Also we consider a proper class $\tclass$ and let $V$ denote the vertex set of the trees in $\tclass$.
+Consider some finite $S \subset \vset$ and some $r \in \vset$. We are interested in the following indices:
+
+\begin{align*}
+    \mathbb{F}^S \colon T &\mapsto \size{\{T' \text{ subtree of } T \colon S \subseteq V(T')\}},\\
+    \mathbb{F} = \mathbb{F}^{\emptyset} \colon T &\mapsto \size{\{\text{subtrees of } T\}},\\
+    \mathbb{W} \colon T &\mapsto \sum_{\{u,v\} \subseteq \vsetof{T}} \distance{u}{v}{T} \quad \text{\emph{(Wiener index)}},\\
+    \mathbb{W}^{\{r\}} \colon T &\mapsto \begin{cases} 0 &r \notin V(T) \\ \sum_{v \in V(T)} \distance{v}{r}{T} &r \in \vsetof{T} \end{cases},\\
+    \mathbb{W}^S \colon T &\mapsto \sum_{\{u,v\} \subseteq \vsetof{T} \cap S} \distance{u}{v}{T}.
+\end{align*}
 
 
-We have $\mathbb{F} = \chi^{0,1}_{\emptyset, 1}$. If $S \neq \emptyset$ then $\mathbb{F}^S$ is the limit, on every tree, of the indices
+%The index $\mathbb{F}^S$ maps every tree $T$ to the number of subtrees $T' \subseteq T$ such that $S \subseteq V(T')$. We write $\mathbb{F} = \mathbb{F}^{\emptyset}$ to denote the index counting the total number of subtrees. The \emph{Wiener index} $\mathbb{W}$ maps every tree $T$ to the sum over each unordered pair $\{u,v\} \subseteq V(T)$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$. The index $\mathbb{W}^{\{r\}}$ maps $T$ to $0$ if $r \notin V(T)$. Otherwise $\mathbb{W}^{\{r\}}(T)$ is the sum over every $v \in V(T)$ of the distance $\distance{v}{r}{T}$ between $v$ and $r$ in $T$. If $\size{S} \geq 2$ then the index $\mathbb{W}^S$ maps $T$ to the sum over each unordered pair $\{u, v\} \subseteq V(T) \cap S$, $u \neq v$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$.
+
+Given $X \subseteq \vset$, $\rho \geq 1$ and $\lambda, \mu \geq 0$ we define $\chi^{\lambda, \mu}_{X, \rho}$ as the Tree-Path index corresponding to $\lambda, \mu$ where for every $v \in \vset$ the value $\wmap(v)$ is either $\rho$ if $v \in X$ or $1$ if $v \notin X$. Also we consider a class $\tclass$ and let $V$ denote the vertex set of the trees in $\tclass$.
+
+
+We have $\mathbb{F} = \chi^{0,1}_{\emptyset, 1}$, whereas $\mathbb{F}^S$ is the limit, on every tree, of the indices
 \begin{eqnarray*}
 	\frac{1}{\rho^{\size{S}}} \chi^{0,1}_{S,\rho}
 \end{eqnarray*}
 as $\rho \rightarrow \infty$. If $\size{S} \geq 2$ and $S \subseteq V$ then $\mathbb{W}^S$ is the limit, on $\tclass$, of the indices
 \begin{eqnarray*}
-	\frac{1}{\varepsilon}\left(\frac{1}{\rho^2} \chi^{1+\varepsilon,0}_{S,\rho} - {\size{S}\choose{2}} \right)
+	\frac{1}{\varepsilon}\left(\frac{1}{\rho^2} \chi^{1+\varepsilon,0}_{S,\rho} - {\binom{\size{S}}{2}} \right)
 \end{eqnarray*}
 as $\rho \rightarrow \infty$ and then $\varepsilon \rightarrow 0$. Finally if $r \in V$ then $\mathbb{W}^{\{r\}}$ is, on $\tclass$, the limit of the indices
 \begin{eqnarray*}
@@ -830,6 +874,8 @@ Some open questions:
 \item[\textbf{Q3.}] Are there other indices that are packed? (Probably the opposite of the sum of the distances to the root and the opposite of the Wiener index if I remember correctly, but here we only proved that they are limits of packed indices) Could we derive some simple conditions for an index to be packed?
 \item[\textbf{Q4.}] Can the notion of packness be extended to encode the optimal trees for the Hosoya and the Merrifield–Simmons\cite{andriantiana} indices?
 \end{itemize}
+
+\bldcomment{As for Q2, the rooted Tree-Path index can be seen as a formal polynomial on the vertices (evaluated by replacing each vertex with its value under $\wmap$). It seems possible to describe the coefficient corresponding to a given subset of vertices. For example, for a path of length $k$ from the root the coefficient will be $\mu^{k-1}$. For such a path minus $t$ vertices we will have $\lambda^t\mu^{k-t-1}$, etc.}
 
 \pagebreak
 \addcontentsline{toc}{section}{References}
