@@ -1,6 +1,7 @@
 \documentclass[11 pt]{modarticle}
 \usepackage{lineno}
 \usepackage{cancel}
+\usepackage{tikz-cd}
 
 % TITLE INFORMATIONS
 
@@ -72,7 +73,7 @@
 
 \section{Background}
 
-In this whole document the following holds. We denote by $\cN$ the set of non-negative integers and by $\cR$ the set of real numbers. We consider some infinite set $\vset$ and some map $\wmap : \vset \to ]0,+\infty[$ that attains its minimum $\wmin > 0$ on $\vset$.
+Denote by $\cN$ the set of non-negative integers and by $\cR$ the set of real numbers. Fix some infinite set $\vset$ and some map $\wmap : \vset \to ]0,+\infty[$ that attains its minimum $\wmin > 0$ on $\vset$.
 
 \subsection{Forests and trees, rooting and ordering}
 
@@ -81,7 +82,7 @@ We call forest any finite (possibly empty), simple (no loops nor multiple edges)
 A forest $F$ equipped with a set $R$ containing exactly one vertex from each connected component of $F$ is called a rooted forest and denoted by $\rtree{F}{R}$. %(the empty forest is rooted by $\emptyset$)
 A rooted tree $\rtree{T}{\{r\}}$ is denoted by $\rtree{T}{r}$ for ease of reading. Given (possibly equal) vertices $u$ and $v$ of $T$ we say that $u$ is an ancestor of $v$ and $v$ an offspring of $u$ in $\rtree{T}{r}$ if $u$ lies on the path between $v$ and $r$ in $T$. The children of $u$ are its adjacent offspring. We call ordering of $\rtree{T}{r}$ any map $\sigma$ sending each vertex $u$ of $T$ to a total order $\sigma(u)$ on the children of $u$ in $\rtree{T}{r}$. We say that $\ortree{T}{r}{\sigma}$ is an ordered tree.
 
-From $\ortree{T}{r}{\sigma}$ one constructs a total order on the vertices of $T$ as follows. For any two distinct vertices $u$ and $v$ of $T$ we say that $u$ is before $v$ in the \textit{BFS order} of $\ortree{T}{r}{\sigma}$ if $\distance{u}{r}{T} < \distance{v}{r}{T}$ or if $\distance{u}{r}{T} = \distance{v}{r}{T}$ and $u$ and $v$ have respective ancestors $x$ and $y$ with a common father $z$ in $\rtree{T}{r}$ such that $x$ is before $y$ in $\sigma(z)$. Observe that it would imply that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$.
+From $\ortree{T}{r}{\sigma}$ one constructs a total order on the vertices of $T$ as follows. For any two distinct vertices $u$ and $v$ of $T$ we say that $u$ is before $v$ in the \textit{BFS order} of $\ortree{T}{r}{\sigma}$ if $\distance{u}{r}{T} < \distance{v}{r}{T}$ or if $\distance{u}{r}{T} = \distance{v}{r}{T}$ and $u$ and $v$ have respective ancestors $x$ and $y$ with a common parent $z$ in $\rtree{T}{r}$ such that $x$ precedes $y$ in $\sigma(z)$. %Observe that it would imply that $v$ is not an ancestor of $u$ in $\rtree{T}{r}$.
 
 
 \subsection{Isomorphism}
@@ -94,7 +95,7 @@ The degree sequence of a tree %$T$ with $n$ vertices
 is the tuple %$(d_1, \dots, d_n)$ 
 of its vertex degrees in non-increasing order. The rooted degree sequence of a rooted tree is the tuple $(d, d_1, \dots, d_{n-1})$ where $d$ is the degree of the root and $d_1, \dots, d_{n-1}$ are the degrees of the other vertices  in non-increasing order.
 
-The \emph{BFS degree sequence} of an ordered tree is the sequence of its vertex degrees in BFS order. This sequence characterises ordered trees up to ordered isomorphism. A tuple $(d_1, \dots, d_n) \in (\cN \setminus \{0\})^n$ for some $n \geq 1$ is the BFS degree sequence of some ordered tree if and only if
+The \emph{BFS degree sequence} of an ordered tree is the tuple of its vertex degrees in BFS order. This sequence characterises ordered trees up to ordered isomorphism. A tuple $(d_1, \dots, d_n) \in (\cN \setminus \{0\})^n$ for some $n \geq 1$ is the BFS degree sequence of some ordered tree if and only if
 \begin{equation}
 	\underset{k=1}{\overset{n}{\sum}} d_k = 2n - 2 \label{eq:valid-seq}.
 \end{equation}
@@ -105,20 +106,37 @@ In this document any BFS degree sequence, any rooted degree sequence and any deg
 \subsection{Classes}
 
 \begin{defi}
-For every finite non-empty $V \subset \vset$ and every non-empty set $S$ of degree sequences of length $\size{V}$, denote by $\pclass{V}{S}$ the set containing exactly the trees whose vertex set is $V$ and whose degree sequence belongs to $S$. We call class any set of the form $\pclass{V}{S}$. Now consider also some non-empty set $S'$ of rooted degree sequences of length $\size{V}$. We denote by $\rpclass{V}{S'}$ the set containing exactly the rooted trees whose vertex set is $V$ and whose rooted degree sequence belongs to $S'$. We call rooted class any set of the form $\rpclass{V}{S'}$.
+For every finite non-empty $V \subset \vset$ and every non-empty set $S$ of [rooted] degree sequences of length $\size{V}$, denote by $\pclass{V}{S}$ [resp.\@ $\rpclass{V}{S}$] the set containing exactly the [rooted] trees whose vertex set is $V$ and whose [rooted] degree sequence belongs to $S$. We call [rooted] class any set of the form $\pclass{V}{S}$ [resp.\@ $\rpclass{V}{S}$].
 \end{defi}
 
 \subsection{Vertex- and edge-switches}
+
+We now describe two operations that convert a [rooted] tree into another with the same vertices.
 
 \begin{defi}
 Assume that a tree $T$ has two distinct vertices $u$ and $v$ whose neighborhoods in $T$ are respectively $N_u$ and $N_v$. Removing the edges between $u$ and $N_u$ and between $v$ and $N_v$ and then adding the edges between $u$ and $N_v$ and between $v$ and $N_u$ gives a tree $T'$. We say that $T'$ is obtained from $T$ by the vertex-switch of the vertices $u$ and $v$. Given a vertex $r$ of $T$ we set $r' = r$ if $r \notin \{u,v\}$, $r' = v$ if $r = u$ and $r' = u$ if $r = v$ and we say that the rooted tree $\rtree{T'}{r'}$ is obtained from the rooted tree $\rtree{T}{r}$ by the rooted vertex-switch of $u$ and $v$.
 \end{defi}
 
+\bldcomment{Forgetful functor from rooted switches to switches. Works for both kinds of switch.}
+
+\begin{tikzcd}
+\rtree{T}{r} \arrow[r, ""{name=U, below}] \arrow[d]
+& \rtree{T'}{r'} \arrow[d] \\
+T \arrow[r, ""{name=V, above}]
+& T'
+\arrow[Rightarrow, from=U, to=V]
+\end{tikzcd}
+
+
 \begin{defi}
 Assume that a tree $T$ has four pairwise-distinct vertices $x,u,v,y$ such that $xu$ and $vy$ are edges of $T$ and $u$ and $v$ both belong to the path between $x$ and $y$ in $T$. Removing the edges $xu$ and $vy$ and adding the edges $xv$ and $uy$ gives a tree $T'$. We say that $T'$ is obtained from $T$ by the edge-switch of the edges $xu$ and $yv$. Given a vertex $r$ of $T$ we say that the rooted tree $\rtree{T'}{r}$ is obtained from the rooted tree $\rtree{T}{r}$ by the rooted edge-switch of the edges $xu$ and $vy$.
 \end{defi}
 
-We collectively refer to [rooted] vertex- and edge-switches as [rooted] switches. [Rooted] switches preserve the vertex set and the [rooted] degree sequence of a tree. It is easily seen that if two trees $T$ and $T'$ have the same vertex set $V$ and the same degree sequence then there is a vertex-switch sequence transforming $T$ into some tree $T''$ whose vertex set is also $V$ and such that every vertex in $V$ has the same degree in $T'$ than in $T''$. It is known that there is an edge-switch sequence between $T'$ and $T''$ \cite[Theorem~4.3]{switch}. Similarly if two rooted trees have the same vertex set and the same rooted degree sequence then there is a sequence of rooted vertex-switch and rooted edge-switch transforming one into the other. Hence Observation~\ref{rem:proper}.
+[Rooted] vertex- and edge-switches, collectively referred to as [rooted] switches, preserve the vertex set and the [rooted] degree sequence of a tree. Conversely, if two [rooted] trees have the same vertex set and the same [rooted] degree sequence then there is a sequence of [rooted] switches % sequence 
+transforming one into the other
+%some tree $T''$ whose vertex set is also $V$ and such that every vertex in $V$ has the same degree in $T'$ than in $T''$. It is known that there is an edge-switch sequence between $T'$ and $T''$ 
+\cite[Theorem~4.3]{switch}. %Similarly if two rooted trees have the same vertex set and the same rooted degree sequence then there is a sequence of rooted switches transforming one into the other. 
+Hence Observation~\ref{rem:proper}.
 
 \begin{rem}\label{rem:proper}
 %A class $\tclass$ is proper if and only if every tree obtained from some element of $\tclass$ by a vertex-switch or by an edge-switch also belongs to $\tclass$. A rooted class $\rtclass$ is proper if and only if every rooted tree obtained from some element of $\rtclass$ by a rooted vertex-switch or by a rooted edge-switch also belongs to $\rtclass$.
@@ -143,10 +161,9 @@ Let $\ortree{T}{r}{\sigma}$ be an ordered tree, $v$ a vertex of $T$, some non-em
 An ordered tree $\ortree{T}{r}{\sigma}$ is greedy for a [rooted] class $\tclass$ if $T$ belongs to $\tclass$, every [rooted] tree obtained from $\ortree{T}{r}{\sigma}$ by a packing does not belong to $\tclass$, and $\wmap$ is non-increasing with respect to the BFS order of $\ortree{T}{r}{\sigma}$.
 \end{defi}
 
-Consider some finite non-empty $V \subset \vset$ and some degree sequence $D$ of length $\size{V}$. The class $\pclass{V}{\{D\}}$ admits, up to labeled ordered isomorphism, a unique greedy ordered tree which we denote by $\greedy{V}{D}$. The BFS degree sequence of $\greedy{V}{D}$ is $D$. Observe that $\greedy{V}{D}$ is only specified up to labeled ordered isomorphism. Given a non-empty set $S$ of degree sequences of length $\size{V}$ the greedy ordered trees of $\pclass{V}{S}$ all belong to $\{\greedy{V}{D'} \;:\; D' \in S\}$.
+Consider some finite non-empty $V \subset \vset$ and some [rooted] degree sequence $D$ of length $\size{V}$. The class $\pclass{V}{\{D\}}$ [resp.\@ the rooted class $\rpclass{V}{\{D\}}$] admits, up to labeled ordered isomorphism, a unique greedy ordered tree which we denote by $\greedy{V}{D}$. The BFS degree sequence of $\greedy{V}{D}$ is $D$. Observe that $\greedy{V}{D}$ is only specified up to labeled ordered isomorphism. Given a non-empty set $S$ of [rooted] degree sequences of length $\size{V}$ the greedy ordered trees of $\pclass{V}{S}$ [resp.\@ $\rpclass{V}{S}$] all belong to $\{\greedy{V}{D'} \;:\; D' \in S\}$.
 
-Now consider some rooted degree sequence $E$ of length $\size{V}$. The rooted class $\rpclass{V}{\{E\}}$ admits, up to labeled ordered isomorphism, a unique greedy ordered tree that we denote by $\greedy{V}{E}$. The BFS degree sequence of $\greedy{V}{E}$ is $E$. There is no clash of notation here since if $D = E$ then $\pclass{V}{\{D\}}$ and $\rpclass{V}{\{E\}}$ admit the same unique greedy ordered tree. Given a non-empty set $S'$ of rooted degree sequences of length $\size{V}$ the greedy ordered trees of $\rpclass{V}{S'}$ all belong to $\{\greedy{V}{E'} \;:\; E' \in S'\}$. 
-
+There is no clash of notation between rooted and unrooted trees since $\pclass{V}{\{D\}}$ and $\rpclass{V}{\{D\}}$ admit the same unique greedy ordered tree.
 It will follow from Corollary~\ref{cor:majorization} that every class and every rooted class admits at least one greedy ordered tree.
 
 %\begin{figure}[H]
@@ -201,11 +218,11 @@ Every majorizer for a [rooted] class is greedy for this same [rooted] class.
 \end{cor}
 
 \begin{prop}\label{prop:majorization}
-Consider some finite non-empty $V \subset \vset$ and two degree sequences $D$ and $D'$ of length $\size{V}$. If $D$ majorizes $D'$ and $D \neq D'$ then there is some tree obtained from $\greedy{V}{D'}$ by a packing whose degree sequence is majorized by $D$. Given two rooted degree sequences $E$ and $E'$ of length $\size{V}$ if $E$ majorizes $E'$ and $E \neq E'$ then there is some rooted tree obtained from $\greedy{V}{E'}$ by a packing whose rooted degree sequence is majorized by $E$.
+Consider some finite non-empty $V \subset \vset$ and two [rooted] degree sequences $D$ and $D'$ of length $\size{V}$. If $D$ majorizes $D'$ and $D \neq D'$ then there is some [rooted] tree obtained from $\greedy{V}{D'}$ by a packing whose [rooted] degree sequence is majorized by $D$.
 \end{prop}
 
 \begin{proof}
-We only consider $D$ and $D'$ as the proof for $E$ and $E'$ is similar.
+We only consider the unrooted case as the rooted one is similar.
 
 We recall that the BFS degree sequence of $\greedy{V}{D'}$ is $D'$. Let us write $D = (d_1, \dots, d_n)$ and $D' = (d'_1, \dots, d'_n)$ with $n = \size{V}$. Consider the least index $k \in [n]$ such that $d_k \neq d'_k$, which exists since $D$ and $D'$ are distinct. The difference $d_k - d'_k$ is positive since $D$ majorizes $D'$. Since both $D$ and $D'$ satisfy Equation~\eqref{eq:valid-seq} then $k < n$ and $d'_{k+1} > 1$ (we recall here that degree sequences are non-increasing tuples of positive integers). So we can consider $l > k$ maximal such that $d'_l = d'_{k+1}$ and we have $d'_l > 1$. Now let $D''$ be the $n$-tuple constructed from $D'$ by replacing the $k^{th}$ value by $d'_k+1$ and the $l^{th}$ value by $d'_l-1$. The $n$-tuple $D''$ is a non-increasing (since if $k > 1$ then $d'_k < d_k \leq d_{k-1} = d'_{k-1}$ and also since if $l < n$ then $d'_l > d'_{l+1}$) tuple of positive integers (since $d'_l > 1$) satisfying Equation~\eqref{eq:valid-seq} so $D''$ is a degree sequence. We claim that $D$ majorizes $D''$ and that $\greedy{V}{D'}$ can be packed to a tree whose degree sequence is $D''$.
 
@@ -289,7 +306,7 @@ In this whole section we consider some $(\lambda, \mu) \in [0,+\infty)^2$.
 
 \subsection{Introducing the Tree-Path indices}
 
-In this subsection we define and quickly study a rooted index $\rindexsymbol$ and an index $\indexsymbol$. Both are parameterized by $\lambda, \mu$ and $\wmap$ even though this is suppressed in the notation in order to ease the reading.
+In this subsection we define and quickly study a rooted index $\rindexsymbol$ and an index $\indexsymbol$. Both are parameterized by $\lambda, \mu$ and $\wmap$ even though this is suppressed in the notation.% in order to ease the reading.
 
 \subsubsection{The rooted Tree-Path index}
 \bldcomment{Convention: $0^0=1$, $\sum_\emptyset \dots = 0$.}
@@ -365,7 +382,7 @@ Observe also that if $\rtree{F}{R}$ is the disjoint union of $\rtree{F_1}{R_1}$ 
 We also obtain a recursion summarized by Lemma~\ref{lem:local-index-recursion}.
 
 \begin{lem}\label{lem:local-index-recursion}
-	Consider a rooted tree $\rtree{T}{r}$ and a subset $S$ of the children of $r$ in $\rtree{T}{r}$. Removing the edge $rs$ for every $s \in S$ splits $T$ into a tree $T_1$ containing $r$ and a forest $F$ with $\size{S}$ components. Then
+	Consider a rooted tree $\rtree{T}{r}$ and a subset $S$ of the children of $r$ in $\rtree{T}{r}$. Removing every edge $rs$ for $s \in S$ splits $T$ into a tree $T_1$ containing $r$ and a forest $F$ with $\size{S}$ components. Then
 \begin{align*}
     \rindex{r}{T} &= \rindex{r}{T_1} \star \rindex{S}{F}.
 	\intertext{In particular, if $S$ contains all children of $r$ then}
@@ -393,6 +410,7 @@ We also obtain a recursion summarized by Lemma~\ref{lem:local-index-recursion}.
 \subsubsection{Decomposing the rooted Tree-Path index}
 
 We start this section with a definition that will be used in Lemma~\ref{lem:rindex-cut}. Let $T$ be a tree and $(u,v)\in\vsetof{T}^2$. Let $n=\distance{u}{v}{v} + 1$ and denote by $x_1, \dots, x_n$ the vertices of the path between $u$ and $v$ in $T$ (so $x_1 = u$ and $x_n = v$). Deleting the edges of this path disconnects $T$ into $n$ trees $(T_k)_{k\in[n]}$ with $x_k\in\vsetof{T_k}$ for each $k$. We define
+\bldcomment{Poor notation}
 \begin{eqnarray}
 	\aindex{u}{v}{T} = \underset{k=1}{\overset{n}{\prod}} (\lambda + \mu \rindex{x_k}{T_k}). \label{eq:aindex}
 \end{eqnarray}
@@ -487,12 +505,7 @@ Let $T$ be a tree with a vertex $u$. Removing $u$ disconnects $T$ into $n$ compo
 \end{lem}
 
 \begin{proof}
-We prove the result recursively on $n$. If $n = 0$ then the result is clear. %If $n = 1$ then Equation~\eqref{eq:global-index-definition} (applied to the edge $u r_1$) gives
-%\begin{eqnarray*}
-%	\tindex{T} = \wmap(u) + \tindex{T_1} + (\lambda + \mu)\wmap(u) \rindex{r_1}{T_1}
-%\end{eqnarray*}
-%and we are done. 
-For $n \geq 1$, let $T'$ be the tree obtained from the disjoint union of $u$ and $F_{n-1}$ by adding the edge $u r_k$ for every $k \in [n-1]$. Applying Equation~\eqref{eq:global-index-definition} (to the edge $u r_n$) gives
+We prove the result by induction on $n$. If $n = 0$ then the result is clear. For $n \geq 1$, let $T'$ be the tree obtained from the disjoint union of $u$ and $F_{n-1}$ by adding the edge $u r_k$ for every $k \in [n-1]$. Applying Equation~\eqref{eq:global-index-definition} (to the edge $u r_n$) gives
 \begin{eqnarray*}
 	\tindex{T} & = & \tindex{T'} + \tindex{T_n} + (\lambda + \mu) \rindex{u}{T'} \rindex{r_n}{T_n}.
 \end{eqnarray*}
@@ -500,7 +513,7 @@ Lemma~\ref{lem:local-index-recursion} gives $\rindex{u}{T'} = \wmap(u) + (\lambd
 \end{proof}
 
 \begin{lem}\label{lem:tindex-decomp-3}
-Consider two vertices $u$ and $u'$ and two (possibly empty) rooted forests $\rtree{F}{R}$ and $\rtree{F'}{R'}$ : assume that $u$, $u'$, $F$, and $F'$ are pairwise-disjoint. Let $T$ be the tree obtained from the disjoint union of $u$, $u'$, $F$ and $F'$ by adding the edges $uu'$, $ur$ for every $r \in R$ and $u'r'$ for every $r' \in R'$ ($T$ may not contain any other vertex than $u$ and $u'$ if $F$ and $F'$ are both empty). Then
+Consider two vertices $u$ and $u'$ and two rooted forests $\rtree{F}{R}$ and $\rtree{F'}{R'}$ : assume that $u$, $u'$, $F$, and $F'$ are pairwise-disjoint. Let $T$ be the tree obtained from the disjoint union of $u$, $u'$, $F$ and $F'$ by adding the edges $uu'$, $ur$ for every $r \in R$ and $u'r'$ for every $r' \in R'$ ($T$ may not contain any other vertex than $u$ and $u'$ if $F$ and $F'$ are both empty). Then
 \begin{eqnarray*}
 	\tindex{T} = A + B \wmap(u) + C \wmap(u') + D \wmap(u) \wmap(u')
 \end{eqnarray*}
@@ -602,7 +615,7 @@ For $\lambda \neq 1$, consider a tree $T$ with three consecutive vertices $a,b$ 
 %	\rindex{c}{T} & = & \lambda^2 x + \lambda y + z + \lambda \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz \\
 %	\rindex{b}{T} & = & \lambda x + y + \lambda z + \mu xy + \lambda \mu xz + \mu yz + \mu^2 xyz.
 %\end{eqnarray*}
-From that we deduce
+Thence
 \begin{eqnarray}
 	\rindex{a}{T} + \rindex{c}{T} - 2 \rindex{b}{T} & = & x \star (y \star z) - y \star z \star x +  z \star (y \star x) - y\star x \star z \notag \\  
 	& = & (x - (y\star z))(1 - \lambda) + (z - (y \star x))(1 - \lambda) \notag \\
@@ -706,9 +719,9 @@ We use the notations $T_x, T_y$ and $T_c$ introduced in Lemma~\ref{lem:compacity
 	\rindex{u}{T} & = & U + HY + \lambda X + \mu (U + HY) X \\
 	\rindex{v}{T} & = & V + HX + \lambda Y + \mu (V + HX) Y.
 \end{eqnarray*}
-We assumed $\rindex{y}{T} > \rindex{x}{T}$ and $\rindex{v}{T} \leq \rindex{u}{T}$ so both of the following holds:
+We assumed $\rindex{y}{T} > \rindex{x}{T}$ and $\rindex{v}{T} \leq \rindex{u}{T}$ so both of the following hold:
 \begin{eqnarray*}
-	0 & > & (X - Y)(1 - \lambda H) + \lambda (U - V) + \mu (UX - VY) \\
+	0 & > & (X - Y)(1 - \lambda H) + \lambda (U - V) + \mu (UX - VY), \\
 	0 & \leq & (X - Y)(\lambda - H) + (U - V) + \mu (UX - VY).
 \end{eqnarray*}
 To ease the reading we introduce the notations $\alpha = X - Y, \beta = U - V$ and $\gamma = UX - VY$ and write again our two equations but using this time our new notations:
@@ -832,7 +845,7 @@ Consider some finite $S \subset \vset$ and some $r \in \vset$. We are interested
 
 %The index $\mathbb{F}^S$ maps every tree $T$ to the number of subtrees $T' \subseteq T$ such that $S \subseteq V(T')$. We write $\mathbb{F} = \mathbb{F}^{\emptyset}$ to denote the index counting the total number of subtrees. The \emph{Wiener index} $\mathbb{W}$ maps every tree $T$ to the sum over each unordered pair $\{u,v\} \subseteq V(T)$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$. The index $\mathbb{W}^{\{r\}}$ maps $T$ to $0$ if $r \notin V(T)$. Otherwise $\mathbb{W}^{\{r\}}(T)$ is the sum over every $v \in V(T)$ of the distance $\distance{v}{r}{T}$ between $v$ and $r$ in $T$. If $\size{S} \geq 2$ then the index $\mathbb{W}^S$ maps $T$ to the sum over each unordered pair $\{u, v\} \subseteq V(T) \cap S$, $u \neq v$, of the distance $\distance{u}{v}{T}$ between $u$ and $v$ in $T$.
 
-Given $X \subseteq \vset$, $\rho \geq 1$ and $\lambda, \mu \geq 0$ we define $\chi^{\lambda, \mu}_{X, \rho}$ as the Tree-Path index corresponding to $\lambda, \mu$ where for every $v \in \vset$ the value $\wmap(v)$ is either $\rho$ if $v \in X$ or $1$ if $v \notin X$. Also we consider a class $\tclass$ and let $V$ denote the vertex set of the trees in $\tclass$.
+Given $X \subseteq \vset$, $\rho \geq 1$ and $\lambda, \mu \geq 0$, we set for every $v \in \vset$ the value $\wmap(v)$ to $\rho$ if $v \in X$ or $1$ if $v \notin X$ and we define $\chi^{\lambda, \mu}_{X, \rho}$ as the Tree-Path index corresponding to $\lambda, \mu$ and $w$. We also consider a class $\tclass$ and let $V$ denote the vertex set of the trees in $\tclass$.
 
 
 We have $\mathbb{F} = \chi^{0,1}_{\emptyset, 1}$, a packed index, whereas $\mathbb{F}^S$ is a limit of packed indices:
